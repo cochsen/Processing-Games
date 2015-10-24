@@ -1,16 +1,30 @@
-float w, h;
 int state;
+float w, h;
+Actor actor;
 
 void setup() {
   size(480, 480);
   w=width; h=height;
   background(0);
   state = 0;
+  actor = new Actor(w/2, h/2);
 }
 
 void draw() {
   background(0);
   drawGrid();
+  actor.display();
+  if(keyPressed == true)
+  {
+    if(actor.xpos>0) 
+      if(key == 'a' || key == 'A') actor.move(-10, 0);
+    if(actor.xpos<w-20)
+      if(key == 'd' || key == 'D') actor.move(10, 0);
+    if(actor.ypos>0)
+      if(key == 'w' || key == 'W') actor.move(0, -10);
+    if(actor.ypos<h-32)
+      if(key == 's' || key == 'S') actor.move(0, 10);    
+  }
 }
 
 void drawGrid() {
