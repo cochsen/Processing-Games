@@ -1,16 +1,28 @@
 int state;
 float w, h;
+int[] orientations = new int[16];
+int[] numOfDarts = new int[16];
+int[] startIndexes = new int[16];
 PImage PlayerImg, dartImg;
 Player player;
-//Dart dart;
-ArrayList<Dart> TopRow1 = new ArrayList<Dart>(),  
-  TopRow2 = new ArrayList<Dart>(),
-  RightRow1 = new ArrayList<Dart>(), 
-  RightRow2 = new ArrayList<Dart>(),
-  BottomRow1 = new ArrayList<Dart>(), 
-  BottomRow2 = new ArrayList<Dart>(),
-  LeftRow1 = new ArrayList<Dart>(), 
-  LeftRow2 = new ArrayList<Dart>();
+/*
+ * ArrayList todos:
+ * generate random integers for orientations of n rows of darts x
+ * generate random integers for number of darts in each row x
+ * generate starting index for dart cluster
+ * method to destroy darts in ArrayList after passing screen
+ * method to recycle darts in each ArrayList
+ * triggers for launch of row - timed or event-driven
+ */
+ArrayList<Dart> 
+  TopRowA = new ArrayList<Dart>(),  
+  TopRowB = new ArrayList<Dart>(),
+  RightRowA = new ArrayList<Dart>(), 
+  RightRowB = new ArrayList<Dart>(),
+  BottomRowA = new ArrayList<Dart>(), 
+  BottomRowB = new ArrayList<Dart>(),
+  LeftRowA = new ArrayList<Dart>(), 
+  LeftRowB = new ArrayList<Dart>();
   
 
 void setup() {
@@ -18,13 +30,23 @@ void setup() {
   w=width; h=height;
   background(0);
   state = 0;
+  // orientation initial values
+  for(int i=0; i<orientations.length; i++) {
+    orientations[i] = int(random(5));  
+  }
+  for(int i=0; i<numOfDarts.length; i++) {
+    numOfDarts[i] = int(random(17));
+  }
+  for(int i=0; i<startIndexes.length; i++) {
+    startIndexes[i] = int(random(25-numOfDarts[i]));  
+  }
   PlayerImg = loadImage("actor.png");
   dartImg = loadImage("dart.png");
   player = new Player(PlayerImg, w/2, h/2);
   for(int i=0; i<21; i++) {
-    LeftRow1.add(new Dart(dartImg, 4, 0.0, float(i*24)));  
+    LeftRowA.add(new Dart(dartImg, 4, 0.0, float(i*24)));  
   }
-  println(LeftRow1);
+  println(LeftRowA);
 }
 
 void draw() {
@@ -42,11 +64,16 @@ void draw() {
     if(player.ypos<h-32)
       if(key == 's' || key == 'S') player.move(0, 8);    
   }
-  for(int i=LeftRow1.size()-1; i>=0; i--) {
-    Dart currentDart = LeftRow1.get(i);
+  for(int i=LeftRowA.size()-1; i>=0; i--) {
+    Dart currentDart = LeftRowA.get(i);
     currentDart.move();
     currentDart.display();
   }
+  if(frameCount%10 == 0) {
+    updateOrientations();    
+    print(orientations[0]);
+  }
+
 }
 
 void drawGrid() {
@@ -54,6 +81,32 @@ void drawGrid() {
   strokeWeight(5);  
   for(int i=0; i<10; i++) line(0, h/10+i*h/10, w, h/10+i*h/10);
   for(int j=0; j<10; j++) line(w/10+j*w/10, h, w/10+j*w/10, 0);    
+}
+
+// generate random integers for orientations of n rows of darts
+void updateOrientations() {
+  for(int i=0; i<orientations.length-1; i++) {
+    int tmp = orientations[i+1];
+    orientations[i] = tmp;
+    orientations[orientations.length-1] = int(random(5));
+  }
+}
+
+// generate random integers for number of darts in each row
+void updateDartNums() {
+  for(int i=0; i<numOfDarts.length-1; i++) {
+    int tmp = numOfDarts[i+1];
+    numOfDarts[i] = tmp;
+    numOfDarts[numOfDarts.length-1] = int(random(17));
+  }
+}
+
+void updateStartIndexes() {
+  for(int i=0; i<startIndexes.length-1; i++) {
+    int tmp = startIndexes[i+1];
+    startIndexes[i] = tmp;
+    startIndexes[startIndexes.length-1] = int(random(25-numOfDarts[i]));
+  }
 }
 
 /*
