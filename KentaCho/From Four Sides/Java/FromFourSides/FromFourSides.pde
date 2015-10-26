@@ -46,7 +46,6 @@ void setup() {
   for(int i=0; i<21; i++) {
     LeftRowA.add(new Dart(dartImg, 4, 0.0, float(i*24)));  
   }
-  println(LeftRowA);
 }
 
 void draw() {
@@ -66,12 +65,15 @@ void draw() {
   }
   for(int i=LeftRowA.size()-1; i>=0; i--) {
     Dart currentDart = LeftRowA.get(i);
-    currentDart.move();
-    currentDart.display();
+    currentDart.out = outOfBounds(currentDart);
+    if(currentDart.out == true) LeftRowA.remove(currentDart);
+    else {
+      currentDart.move();
+      currentDart.display();
+    }
   }
   if(frameCount%10 == 0) {
-    updateOrientations();    
-    print(orientations[0]);
+    updateOrientations();   
   }
 
 }
@@ -107,6 +109,19 @@ void updateStartIndexes() {
     startIndexes[i] = tmp;
     startIndexes[startIndexes.length-1] = int(random(25-numOfDarts[i]));
   }
+}
+
+boolean outOfBounds (Dart current) {
+  if(0 > current.ypos || current.ypos > h || 0 > current.xpos || current.xpos > w) return true;
+  else return false;  
+}
+
+void createDartArray() {
+  
+}
+
+void destroyDartArray() {
+    
 }
 
 /*

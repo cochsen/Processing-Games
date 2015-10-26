@@ -3,12 +3,14 @@ class Dart {
   PImage img;
   float xpos, ypos;
   int orientation;
+  boolean out;
   
   Dart(PImage _img, int _orientation, float _x, float _y) {
     img = _img;
     orientation = _orientation;
     xpos = _x;
     ypos = _y;
+    out = false;
   }
   
   void display() {
@@ -43,12 +45,5 @@ class Dart {
         break;
     }
   }
-  
-  void create() {
-    
-  }
-  
-  void destroy() {
-    
-  }
+
 }
