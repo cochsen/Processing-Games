@@ -8,30 +8,14 @@ PImage PlayerImg, dartImgUp, dartImgDown, dartImgLeft, dartImgRight,
 Player player;
 /*
  * ArrayList todos:
- * generate random integers for orientations of n rows of darts x
- * generate random integers for number of darts in each row x
- * generate starting index for dart cluster x
- * method to destroy darts in ArrayList after passing screen x
- * method to recycle darts in each ArrayList
  * triggers for launch of row - timed or event-driven
  */
 ArrayList<ArrayList<Dart>> rows = new ArrayList<ArrayList<Dart>>();
 ArrayList<Dart> darts = new ArrayList<Dart>();
-
-/*
-ArrayList<Dart> 
-  RowA = new ArrayList<Dart>(),
-  RowB = new ArrayList<Dart>(),
-  RowC = new ArrayList<Dart>(),
-  RowD = new ArrayList<Dart>(),
-  RowE = new ArrayList<Dart>(),
-  RowF = new ArrayList<Dart>(),
-  RowG = new ArrayList<Dart>(),
-  RowH = new ArrayList<Dart>();
-  */
   
 void setup() {
   size(480, 480);
+  frameRate(30);
   w=width; h=height;
   background(0);
   state = 0;
@@ -52,6 +36,7 @@ void setup() {
   dartImgRight = loadImage("DartPointRight.png");
   player = new Player(PlayerImg, w/2, h/2);
   for(int i=0; i<orientations.length; i++) {
+    rows.add(darts);
     switch(orientations[i]) {
       case 1:
         tmpImage = dartImgDown;
@@ -82,24 +67,7 @@ void setup() {
       else
         darts.add(new Dart(tmpImage, tmpOrientation, 0.0, float(startIndexes[j]*24))); 
     }
-    rows.add(darts);
   }
-  
-  /*
-  for(int i=0; i<orientations.length; i++) {
-    for(int j=0; j<  
-  }
-  for(int i=0; i<21; i++) {
-    TopRowA.add(new Dart(dartImgDown, 1, float(i*24), 0.0));
-    TopRowB.add(new Dart(dartImgDown, 1, float(i*24), 0.0));
-    RightRowA.add(new Dart(dartImgRight, 2, w, float(i*24)));
-    RightRowB.add(new Dart(dartImgRight, 2, w, float(i*24)));
-    BottomRowA.add(new Dart(dartImgUp, 3, float(i*24), h));
-    BottomRowA.add(new Dart(dartImgUp, 3, float(i*24), h));
-    LeftRowA.add(new Dart(dartImgLeft, 4, 0.0, float(i*24)));  
-    LeftRowB.add(new Dart(dartImgLeft, 4, 0.0, float(i*24)));     
-  }
-  */
 }
 
 void draw() {
@@ -117,19 +85,26 @@ void draw() {
     if(player.ypos<h-32)
       if(key == 's' || key == 'S') player.move(0, 8);    
   }
-  for(int i=darts.size()-1; i>=0; i--) {
-    Dart currentDart = darts.get(i);
-    currentDart.out = outOfBounds(currentDart);
-    if(currentDart.out == true) darts.remove(currentDart);
-    else {
-      currentDart.move();
-      currentDart.display();
+  for(int i=rows.size()-1; i>=0; i--) {
+    for(int j=rows.get(i).size()-1; j>=0; j--) {
+      Dart currentDart = darts.get(j);
+      currentDart.out = outOfBounds(currentDart);
+      if(currentDart.out == true) 
+      {
+        darts.remove(currentDart);
+        println("Dart destroyed");   
+        if(j == 0) 
+        {
+          updateOrientations(); 
+          println("\n");
+        }
+      }
+      else {
+        currentDart.move();
+        currentDart.display();
+      }      
     }
-  }
-  if(frameCount%10 == 0) {
-    updateOrientations();   
-  }
-
+  }     
 }
 
 void drawGrid() {

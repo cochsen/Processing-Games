@@ -16,15 +16,6 @@ class Dart {
   void display() {
     imageMode(CORNER);
     image(img, xpos, ypos);
-    /*
-    pushMatrix();    
-    translate(xpos+img.width/2, ypos+img.height/2);
-    rotate(0);
-    rotate(PI/2);
-    translate(-xpos-img.width/2, -ypos-img.height/2);    
-    image(img, xpos, ypos);
-    popMatrix();    
-    */
   }
   
   void move() {
