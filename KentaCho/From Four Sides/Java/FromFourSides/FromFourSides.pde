@@ -1,8 +1,15 @@
+/* Refactor
+ * 1 ArrayList of Dart objects
+ * Dart objects will have 2D dimensions of whole row/col
+ * Image will be repeating Dart.length/image.length times
+ * Dart obj will be removed from ArrayList after leaving screen and new obj will be created
+ */
+
 int state, tmpOrientation;
 float w, h;
 int[] orientations = new int[8];
-int[] numOfDarts = new int[8];
-int[] startIndexes = new int[8];
+int[] dartRowSize = new int[8];
+int[] startPos = new int[8];
 PImage PlayerImg, dartImgUp, dartImgDown, dartImgLeft, dartImgRight, 
   tmpImage;
 Player player;
@@ -10,33 +17,39 @@ Player player;
  * ArrayList todos:
  * triggers for launch of row - timed or event-driven
  */
-ArrayList<ArrayList<Dart>> rows = new ArrayList<ArrayList<Dart>>();
-ArrayList<Dart> darts = new ArrayList<Dart>();
+// ArrayList of darts - single row/col
+ArrayList<Dart> Darts = new ArrayList<Dart>();
   
 void setup() {
   size(480, 480);
+  // slow down game for testing
   frameRate(30);
   w=width; h=height;
   background(0);
   state = 0;
-  // orientation initial values
+  // orientation initial values (determines starting side and direction of movement)
   for(int i=0; i<orientations.length; i++) {
     orientations[i] = int(random(5));  
   }
-  for(int i=0; i<numOfDarts.length; i++) {
-    numOfDarts[i] = int(random(17));
+  // initial number of darts for first 8 rows/cols
+  for(int i=0; i<dartRowSize.length; i++) {
+    dartRowSize[i] = 24*int(random(1, 17));
   }
-  for(int i=0; i<startIndexes.length; i++) {
-    startIndexes[i] = int(random(25-numOfDarts[i]));  
+  // some index to start the row/col that will fit all the darts on the screen
+  for(int i=0; i<startPos.length; i++) {
+    startPos[i] = int(random(480-dartRowSize[i]));  
   }
+  // load .png images
   PlayerImg = loadImage("actor.png");
   dartImgUp = loadImage("DartPointUp.png");
   dartImgLeft = loadImage("DartPointLeft.png");
   dartImgDown = loadImage("DartPointDown.png");
   dartImgRight = loadImage("DartPointRight.png");
+  // initialize player in the middle of the board
   player = new Player(PlayerImg, w/2, h/2);
+  // add 8 ArrayLists of darts to ArrayList rows
+  // select image based on orientation
   for(int i=0; i<orientations.length; i++) {
-    rows.add(darts);
     switch(orientations[i]) {
       case 1:
         tmpImage = dartImgDown;
@@ -57,17 +70,19 @@ void setup() {
       default:
         break;
     }
+    // create dart with image and positions based on orientation
     for(int j=0; j<orientations.length; j++) {
       if(tmpOrientation == 1)
-        darts.add(new Dart(tmpImage, tmpOrientation, float(startIndexes[j])*24, 0.0));
+        Darts.add(new Dart(tmpImage, tmpOrientation, startPos[j], 0.0, dartRowSize[j], 24));
       else if(tmpOrientation == 2)
-        darts.add(new Dart(tmpImage, tmpOrientation, w, float(startIndexes[j])*24));
+        Darts.add(new Dart(tmpImage, tmpOrientation, w, startPos[j], 24, dartRowSize[j]));
       else if(tmpOrientation == 3)
-        darts.add(new Dart(tmpImage, tmpOrientation, float(startIndexes[j])*24, h));
+        Darts.add(new Dart(tmpImage, tmpOrientation, startPos[j], h, dartRowSize[j], 24));
       else
-        darts.add(new Dart(tmpImage, tmpOrientation, 0.0, float(startIndexes[j]*24))); 
+        Darts.add(new Dart(tmpImage, tmpOrientation, 0.0, startPos[j], 24, dartRowSize[j])); 
     }
   }
+  for(int i=0; i<Darts.size(); i++) println(i + ":" + "xpos:" + Darts.get(i).xpos + " " + Darts.get(i).ypos);
 }
 
 void draw() {
@@ -85,25 +100,18 @@ void draw() {
     if(player.ypos<h-32)
       if(key == 's' || key == 'S') player.move(0, 8);    
   }
-  for(int i=rows.size()-1; i>=0; i--) {
-    for(int j=rows.get(i).size()-1; j>=0; j--) {
-      Dart currentDart = darts.get(j);
-      currentDart.out = outOfBounds(currentDart);
-      if(currentDart.out == true) 
-      {
-        darts.remove(currentDart);
-        println("Dart destroyed");   
-        if(j == 0) 
-        {
-          updateOrientations(); 
-          println("\n");
-        }
-      }
-      else {
-        currentDart.move();
-        currentDart.display();
-      }      
+  for(int i=Darts.size()-1; i>=0; i--) {
+    Dart currentDart = Darts.get(i);
+    currentDart.out = outOfBounds(currentDart);
+    if(currentDart.out == true) 
+    {
+      Darts.remove(currentDart);
+      updateOrientations(); 
     }
+    else {
+      currentDart.move();
+      currentDart.display();
+    }      
   }     
 }
 
@@ -123,6 +131,7 @@ void updateOrientations() {
   }
 }
 
+/*
 // generate random integers for number of darts in each row
 void updateDartNums() {
   for(int i=0; i<numOfDarts.length-1; i++) {
@@ -139,6 +148,7 @@ void updateStartIndexes() {
     startIndexes[startIndexes.length-1] = int(random(25-numOfDarts[i]));
   }
 }
+*/
 
 boolean outOfBounds (Dart current) {
   if(0 > current.ypos || current.ypos > h || 0 > current.xpos || current.xpos > w) return true;
