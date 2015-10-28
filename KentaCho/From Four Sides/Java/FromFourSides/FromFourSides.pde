@@ -7,6 +7,7 @@
 
 int state, tmpOrientation;
 float w, h;
+boolean[] keys;
 int[] orientations = new int[8];
 int[] dartRowSize = new int[8];
 int[] startPos = new int[8];
@@ -27,6 +28,8 @@ void setup() {
   w=width; h=height;
   background(0);
   state = 0;
+  keys = new boolean[4];  // mapping: [d,a,s,w]
+  for(int i=0; i<keys.length; i++) keys[i] = false;  
   // orientation initial values (determines starting side and direction of movement)
   for(int i=0; i<orientations.length; i++) {
     orientations[i] = int(random(5));  
@@ -88,18 +91,8 @@ void setup() {
 void draw() {
   background(0);
   drawGrid();  
+  player.update();
   player.display(); 
-  if(keyPressed == true)
-  {
-    if(player.xpos>0) 
-      if(key == 'a' || key == 'A') player.move(-8, 0);
-    if(player.xpos<w-24)
-      if(key == 'd' || key == 'D') player.move(8, 0);
-    if(player.ypos>0)
-      if(key == 'w' || key == 'W') player.move(0, -8);
-    if(player.ypos<h-32)
-      if(key == 's' || key == 'S') player.move(0, 8);    
-  }
   for(int i=Darts.size()-1; i>=0; i--) {
     Dart currentDart = Darts.get(i);
     currentDart.out = outOfBounds(currentDart);
@@ -120,6 +113,22 @@ void drawGrid() {
   strokeWeight(5);  
   for(int i=0; i<10; i++) line(0, h/10+i*h/10, w, h/10+i*h/10);
   for(int j=0; j<10; j++) line(w/10+j*w/10, h, w/10+j*w/10, 0);    
+}
+
+void keyPressed() 
+{
+    if(key == 'a' || key == 'A') keys[1] = true;
+    if(key == 'd' || key == 'D') keys[0] = true;
+    if(key == 'w' || key == 'W') keys[2] = true;
+    if(key == 's' || key == 'S') keys[3] = true;      
+}
+
+void keyReleased()
+{
+  if(key == 'a' || key == 'A') keys[1] = false;
+  if(key == 'd' || key == 'D') keys[0] = false;
+  if(key == 'w' || key == 'W') keys[2] = false;
+  if(key == 's' || key == 'S') keys[3] = false;
 }
 
 // generate random integers for orientations of n rows of darts
