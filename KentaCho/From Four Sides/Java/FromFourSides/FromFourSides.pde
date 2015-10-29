@@ -1,3 +1,4 @@
+boolean collision;
 int state, tmpOrientation, nextDart;
 float w, h;
 boolean[] keys;
@@ -14,12 +15,14 @@ Player player;
 // ArrayList of darts - single row/col
 ArrayList<Dart> Darts = new ArrayList<Dart>();
   
-void setup() {
+void setup() 
+{
   size(480, 480);
   frameRate(60);
   w=width; h=height;
   background(0);
   state = 0;
+  collision=false;
   keys = new boolean[4];  // mapping: [d,a,s,w]
   for(int i=0; i<keys.length; i++) keys[i] = false;  
   // orientation initial values (determines starting side and direction of movement)
@@ -45,7 +48,8 @@ void setup() {
   player = new Player(PlayerImg, w/2, h/2);
   // add 8 ArrayLists of darts to ArrayList rows
   // select image based on orientation
-  for(int i=0; i<orientations.length; i++) {
+  for(int i=0; i<orientations.length; i++) 
+  {
     // create dart with image and positions based on orientation
     if(orientations[i] == 1)
     {
@@ -72,12 +76,15 @@ void setup() {
   nextDart = int(random(Darts.size()));
 }
 
-void draw() {
+void draw() 
+{
   background(0);
   drawGrid();  
   player.update();
   player.display(); 
-  Dart currentDart = Darts.get(0);
+  Dart currentDart = Darts.get(nextDart);
+  collision = detectCollision(currentDart);
+  if(collision == true) exit();
   currentDart.out = outOfBounds(currentDart);
   if(currentDart.out == true) 
   {
@@ -91,7 +98,8 @@ void draw() {
   }      
 }
 
-void drawGrid() {
+void drawGrid() 
+{
   stroke(80,0,80);
   strokeWeight(5);  
   for(int i=0; i<10; i++) line(0, h/10+i*h/10, w, h/10+i*h/10);
@@ -115,7 +123,8 @@ void keyReleased()
 }
 
 // generate random integers for orientations of n rows of darts
-void updateOrientations() {
+void updateOrientations() 
+{
   for(int i=0; i<orientations.length-1; i++) {
     int tmp = orientations[i+1];
     orientations[i] = tmp;
@@ -123,31 +132,14 @@ void updateOrientations() {
   }
 }
 
-/*
-// generate random integers for number of darts in each row
-void updateDartNums() {
-  for(int i=0; i<numOfDarts.length-1; i++) {
-    int tmp = numOfDarts[i+1];
-    numOfDarts[i] = tmp;
-    numOfDarts[numOfDarts.length-1] = int(random(17));
-  }
-}
-
-void updateStartIndexes() {
-  for(int i=0; i<startIndexes.length-1; i++) {
-    int tmp = startIndexes[i+1];
-    startIndexes[i] = tmp;
-    startIndexes[startIndexes.length-1] = int(random(25-numOfDarts[i]));
-  }
-}
-*/
-
-boolean outOfBounds (Dart current) {
+boolean outOfBounds (Dart current) 
+{
   if(0 > current.ypos || current.ypos > h || 0 > current.xpos || current.xpos > w) return true;
   else return false;  
 }
 
-void createNewDarts() {
+void createNewDarts() 
+{
   int newOrientation = int(random(1,5));
   int newDartRowSize = 24*int(random(1, 17));
   int newDiff = int(random(480-newDartRowSize));
@@ -174,6 +166,8 @@ void createNewDarts() {
   }  
 }
 
-void destroyDartArray() {
-    
+boolean detectCollision(Dart currentDart) 
+{
+  if(player.xpos>currentDart.xpos && player.xpos<currentDart.xpos+currentDart.w && player.ypos>currentDart.ypos && player.ypos<currentDart.ypos+currentDart.h) return true;
+  else return false;
 }
