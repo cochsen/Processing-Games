@@ -1,11 +1,4 @@
-/* Refactor
- * 1 ArrayList of Dart objects
- * Dart objects will have 2D dimensions of whole row/col
- * Image will be repeating Dart.length/image.length times
- * Dart obj will be removed from ArrayList after leaving screen and new obj will be created
- */
-
-int state, tmpOrientation;
+int state, tmpOrientation, nextDart;
 float w, h;
 boolean[] keys;
 int[] orientations = new int[8];
@@ -23,8 +16,7 @@ ArrayList<Dart> Darts = new ArrayList<Dart>();
   
 void setup() {
   size(480, 480);
-  // slow down game for testing
-  frameRate(30);
+  frameRate(60);
   w=width; h=height;
   background(0);
   state = 0;
@@ -32,7 +24,7 @@ void setup() {
   for(int i=0; i<keys.length; i++) keys[i] = false;  
   // orientation initial values (determines starting side and direction of movement)
   for(int i=0; i<orientations.length; i++) {
-    orientations[i] = int(random(5));  
+    orientations[i] = int(random(1,5));  
   }
   // initial number of darts for first 8 rows/cols
   for(int i=0; i<dartRowSize.length; i++) {
@@ -40,7 +32,8 @@ void setup() {
   }
   // some index to start the row/col that will fit all the darts on the screen
   for(int i=0; i<startPos.length; i++) {
-    startPos[i] = int(random(480-dartRowSize[i]));  
+    int diff = int(random(480-dartRowSize[i]));
+    startPos[i] = diff-(diff%24);  
   }
   // load .png images
   PlayerImg = loadImage("actor.png");
@@ -53,39 +46,30 @@ void setup() {
   // add 8 ArrayLists of darts to ArrayList rows
   // select image based on orientation
   for(int i=0; i<orientations.length; i++) {
-    switch(orientations[i]) {
-      case 1:
-        tmpImage = dartImgDown;
-        tmpOrientation = 1;
-        break;
-      case 2:
-        tmpImage = dartImgLeft;
-        tmpOrientation = 2;
-        break;
-      case 3:
-        tmpImage = dartImgUp;
-        tmpOrientation = 3;
-        break;
-      case 4:
-        tmpImage = dartImgRight;
-        tmpOrientation = 4;
-        break;
-      default:
-        break;
-    }
     // create dart with image and positions based on orientation
-    for(int j=0; j<orientations.length; j++) {
-      if(tmpOrientation == 1)
-        Darts.add(new Dart(tmpImage, tmpOrientation, startPos[j], 0.0, dartRowSize[j], 24));
-      else if(tmpOrientation == 2)
-        Darts.add(new Dart(tmpImage, tmpOrientation, w, startPos[j], 24, dartRowSize[j]));
-      else if(tmpOrientation == 3)
-        Darts.add(new Dart(tmpImage, tmpOrientation, startPos[j], h, dartRowSize[j], 24));
-      else
-        Darts.add(new Dart(tmpImage, tmpOrientation, 0.0, startPos[j], 24, dartRowSize[j])); 
+    if(orientations[i] == 1)
+    {
+      tmpImage = dartImgDown;
+      Darts.add(new Dart(tmpImage, orientations[i], startPos[i], 0.0, dartRowSize[i], 24));
+    }
+    else if(orientations[i] == 2)
+    {
+      tmpImage = dartImgLeft;
+      Darts.add(new Dart(tmpImage, orientations[i], w, startPos[i], 24, dartRowSize[i]));
+    }
+    else if(orientations[i] == 3)
+    {
+      tmpImage = dartImgUp;
+      Darts.add(new Dart(tmpImage, orientations[i], startPos[i], h, dartRowSize[i], 24));
+    }
+    else
+    {
+      tmpImage = dartImgRight;
+      Darts.add(new Dart(tmpImage, orientations[i], 0.0, startPos[i], 24, dartRowSize[i])); 
     }
   }
-  for(int i=0; i<Darts.size(); i++) println(i + ":" + "xpos:" + Darts.get(i).xpos + " " + Darts.get(i).ypos);
+  // pick first dart to appear at random
+  nextDart = int(random(Darts.size()));
 }
 
 void draw() {
@@ -93,19 +77,17 @@ void draw() {
   drawGrid();  
   player.update();
   player.display(); 
-  for(int i=Darts.size()-1; i>=0; i--) {
-    Dart currentDart = Darts.get(i);
-    currentDart.out = outOfBounds(currentDart);
-    if(currentDart.out == true) 
-    {
-      Darts.remove(currentDart);
-      updateOrientations(); 
-    }
-    else {
-      currentDart.move();
-      currentDart.display();
-    }      
-  }     
+  Dart currentDart = Darts.get(0);
+  currentDart.out = outOfBounds(currentDart);
+  if(currentDart.out == true) 
+  {
+    Darts.remove(currentDart);
+    nextDart = int(random(Darts.size()));
+  }
+  else {
+    currentDart.move();
+    currentDart.display();
+  }      
 }
 
 void drawGrid() {
@@ -171,50 +153,3 @@ void createDartArray() {
 void destroyDartArray() {
     
 }
-
-/*
-
-You need to keep track of the key presses and releases yourself if you want ot chek on multiple keys. 
-
-This is a simple example for the two specific keys. You can extend on this to have any number you want...
-
-Code:
-boolean[] keys;
-
-void setup()
-{
-  size(200, 200);
-  framerate(5);
-  keys=new boolean[2];
-  keys[0]=false;
-  keys[1]=false;
-}
-void draw() 
-{
-  if( keys[0]) 
-  {  
-    print("1");
-  }
-  if( keys[1]) 
-  {
-    print("2");
-  }
-}
-
-void keyPressed()
-{
-  if(key=='a')
-    keys[0]=true;
-  if(key=='s')
-    keys[1]=true;
-}
-
-void keyReleased()
-{
-  if(key=='a')
-    keys[0]=false;
-  if(key=='s')
-    keys[1]=false;
-} 
-
-*/

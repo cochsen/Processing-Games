@@ -15,11 +15,11 @@ class Dart {
     out = false;
     if(orientation == 1 || orientation == 3)
     {
-      nImg = int(h/img.height);
+      nImg = int(w/img.width);
     }
     else 
     {
-      nImg = int(w/img.width);
+      nImg = int(h/img.height);
     }
   }
   
@@ -29,16 +29,14 @@ class Dart {
     {
       for(int i=0; i<nImg; i++) 
       {
-        image(img, xpos, ypos);  
-        translate(24,0);
+        image(img, xpos+i*24, ypos);  
       }  
     }
     else 
     {
       for(int i=0; i<nImg; i++)
       {
-        image(img, xpos, ypos);  
-        translate(0,24);
+        image(img, xpos, ypos+i*24);  
       }
     }
     
