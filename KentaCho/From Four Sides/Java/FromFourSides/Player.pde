@@ -1,10 +1,12 @@
-class Player {
+class Player 
+{
   
   PImage img;
   float xpos, ypos;
   float speed, diagSpeed;  
   
-  Player(PImage _img, float _x, float _y) {
+  Player(PImage _img, float _x, float _y) 
+  {
     img = _img;
     xpos = _x;
     ypos = _y;
@@ -12,12 +14,14 @@ class Player {
     diagSpeed = sqrt(speed/2);    
   }
   
-  void display() {
+  void display() 
+  {
     imageMode(CORNER);
     image(img, xpos, ypos);
   }
     
-  void update() {
+  void update() 
+  {
     if(keys[0] == true) 
       if(player.xpos<w-24) player.move(8,0);
     if(keys[1] == true) 
@@ -36,7 +40,8 @@ class Player {
       if(player.xpos<w-24 && player.ypos>0) player.move(diagSpeed,-diagSpeed);     
   }  
   
-  void move(float px, float py) {
+  void move(float px, float py) 
+  {
     xpos = xpos+px;
     ypos = ypos+py;
   }

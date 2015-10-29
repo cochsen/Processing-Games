@@ -26,15 +26,18 @@ void setup()
   keys = new boolean[4];  // mapping: [d,a,s,w]
   for(int i=0; i<keys.length; i++) keys[i] = false;  
   // orientation initial values (determines starting side and direction of movement)
-  for(int i=0; i<orientations.length; i++) {
+  for(int i=0; i<orientations.length; i++) 
+  {
     orientations[i] = int(random(1,5));  
   }
   // initial number of darts for first 8 rows/cols
-  for(int i=0; i<dartRowSize.length; i++) {
+  for(int i=0; i<dartRowSize.length; i++) 
+  {
     dartRowSize[i] = 24*int(random(1, 17));
   }
   // some index to start the row/col that will fit all the darts on the screen
-  for(int i=0; i<startPos.length; i++) {
+  for(int i=0; i<startPos.length; i++) 
+  {
     int diff = int(random(480-dartRowSize[i]));
     startPos[i] = diff-(diff%24);  
   }
@@ -79,23 +82,39 @@ void setup()
 void draw() 
 {
   background(0);
-  drawGrid();  
-  player.update();
-  player.display(); 
-  Dart currentDart = Darts.get(nextDart);
-  collision = detectCollision(currentDart);
-  if(collision == true) exit();
-  currentDart.out = outOfBounds(currentDart);
-  if(currentDart.out == true) 
+  drawGrid(); 
+  if(state == 0)
   {
-    Darts.remove(currentDart);
-    createNewDarts();
-    nextDart = int(random(Darts.size()));
+    player.update();
+    player.display(); 
+    Dart currentDart = Darts.get(nextDart);
+    collision = detectCollision(currentDart);
+    if(collision == true)
+    {
+      state=1;
+      Darts.remove(currentDart);
+      createNewDarts();
+      nextDart = int(random(Darts.size()));      
+      player.xpos=w/2;
+      player.ypos=h/2;
+    }
+    currentDart.out = outOfBounds(currentDart);
+    if(currentDart.out == true) 
+    {
+      Darts.remove(currentDart);
+      createNewDarts();
+      nextDart = int(random(Darts.size()));
+    }
+    else {
+      currentDart.move();
+      currentDart.display();
+    }       
+  }   
+  else
+  {
+    text("From Four Sides", w/2, h/2);   
+    if(keyPressed) state=0;
   }
-  else {
-    currentDart.move();
-    currentDart.display();
-  }      
 }
 
 void drawGrid() 

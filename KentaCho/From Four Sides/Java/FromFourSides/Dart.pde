@@ -1,11 +1,13 @@
-class Dart {
+class Dart 
+{
   
   PImage img;
   float xpos, ypos, w, h;
   int orientation, nImg;
   boolean out;
   
-  Dart(PImage _img, int _orientation, float _x, float _y, float _w, float _h) {
+  Dart(PImage _img, int _orientation, float _x, float _y, float _w, float _h) 
+  {
     img = _img;
     orientation = _orientation;
     xpos = _x;
@@ -23,7 +25,8 @@ class Dart {
     }
   }
   
-  void display() {
+  void display() 
+  {
     imageMode(CORNER);
     if(orientation == 1 || orientation == 3)
     {
@@ -42,7 +45,8 @@ class Dart {
     
   }
   
-  void move() {
+  void move() 
+  {
     switch(orientation) {
       case 1:
         ypos += 5;
