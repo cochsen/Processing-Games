@@ -1,0 +1,14 @@
+﻿To Do:
+
+Desktop
+- Create explosion for player collision
+- Multiple waves of arrows on the screen at once
+- Introduce some variability in the timing of the waves
+- Add a font
+- Add music/sound efx
+- Add glow to objects
+- Fine-tune size and placement of arrow rows/cols to match original
+
+Android
+- replace keystroke controls with touch screen controls
+- adjust screen size for mobile phones
