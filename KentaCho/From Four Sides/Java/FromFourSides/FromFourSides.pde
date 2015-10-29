@@ -82,6 +82,7 @@ void draw() {
   if(currentDart.out == true) 
   {
     Darts.remove(currentDart);
+    createNewDarts();
     nextDart = int(random(Darts.size()));
   }
   else {
@@ -146,8 +147,31 @@ boolean outOfBounds (Dart current) {
   else return false;  
 }
 
-void createDartArray() {
-  
+void createNewDarts() {
+  int newOrientation = int(random(1,5));
+  int newDartRowSize = 24*int(random(1, 17));
+  int newDiff = int(random(480-newDartRowSize));
+  int newStartPos = newDiff-(newDiff%24);  
+  if(newOrientation == 1)
+  {
+    tmpImage = dartImgDown;
+    Darts.add(new Dart(tmpImage, newOrientation, newStartPos, 0.0, newDartRowSize, 24));
+  }
+  else if(newOrientation == 2)
+  {
+    tmpImage = dartImgLeft;
+    Darts.add(new Dart(tmpImage, newOrientation, w, newStartPos, 24, newDartRowSize));
+  }
+  else if(newOrientation == 3)
+  {
+    tmpImage = dartImgUp;
+    Darts.add(new Dart(tmpImage, newOrientation, newStartPos, h, newDartRowSize, 24));
+  }
+  else
+  {
+    tmpImage = dartImgRight;
+    Darts.add(new Dart(tmpImage, newOrientation, 0.0, newStartPos, 24, newDartRowSize)); 
+  }  
 }
 
 void destroyDartArray() {
