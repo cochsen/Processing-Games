@@ -1,4 +1,4 @@
-float w, h, barWidth, speed, barHeight;
+float w, h, barWidth, speedX, speedY, gravity, barHeight;
 Player player;
 //Bar testBar;
 ArrayList<Bar> Bars = new ArrayList<Bar>();
@@ -11,12 +11,14 @@ void setup()
   w=width; h=height;
   barWidth=w/20;
   barHeight = h-h/6;
-  speed = 12.0;
+  speedX = 12.0;
+  speedY = 0.1;
+  gravity = 0.1;
   player = new Player(w/6, h-h/6);
   //testBar = new Bar(460, 60);
   for(int i=0; i<24; i++) 
   {
-    Bars.add(new Bar(float(i*24), barHeight, speed));  
+    Bars.add(new Bar(float(i*24), barHeight, speedX));  
     barHeight = h-h/6;
   }
 }
@@ -29,12 +31,12 @@ void draw()
     if(Bars.get(i).xpos<0-2*barWidth)
     {
       barHeight = random(mouseY, h);
-      Bars.add(new Bar(22*24, barHeight, speed));
+      Bars.add(new Bar(22*24, barHeight, speedX));
       Bars.remove(i);  
     }
     else
     {
-      Bars.get(i).update(mouseX, mouseY, speed);
+      Bars.get(i).update(mouseX, mouseY, speedX);
       Bars.get(i).display();      
     }
   }

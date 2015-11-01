@@ -26,7 +26,16 @@ class Bar
     }
     if(xpos>w/6-20 && xpos<w/6+20)
     {
-      player.ypos = ypos;  
+      if(player.ypos<ypos)
+      {
+        player.ypos += speedY;
+        speedY += gravity;
+      }
+      else
+      {
+        player.ypos = ypos;         
+        speedY = 1;
+      }
     }
   }
   
