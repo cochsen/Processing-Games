@@ -9,12 +9,6 @@ class Player
     ypos = _y;
   }
   
-  void update(float _x, float _y)
-  {
-    xpos = _x;
-    ypos = _y;
-  }
-  
   void display()
   {
     rectMode(CENTER);
