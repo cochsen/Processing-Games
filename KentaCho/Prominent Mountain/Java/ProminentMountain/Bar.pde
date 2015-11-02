@@ -1,6 +1,5 @@
 class Bar
 {
- 
   float xpos, ypos, barWidth, barHalfWidth, barHeight, mousePosX, mousePosY, speed;
   
   Bar(float _x, float _y, float _s)
@@ -28,7 +27,7 @@ class Bar
     {
       if(player.ypos<ypos)
       {
-        player.ypos += speedY;
+        player.ypos += speedY - 0.3*momentum;
         speedY += gravity;
       }
       else

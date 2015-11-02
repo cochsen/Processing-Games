@@ -1,6 +1,7 @@
+int heightCount;
 float w, h, barWidth, speedX, speedY, gravity, barHeight;
+float lastHeight, heightSum, momentum;
 Player player;
-//Bar testBar;
 ArrayList<Bar> Bars = new ArrayList<Bar>();
 
 void setup()
@@ -14,8 +15,11 @@ void setup()
   speedX = 12.0;
   speedY = 0.1;
   gravity = 0.1;
+  heightCount = 1;
+  lastHeight = h-h/6;
+  heightSum = 1;
+  momentum = 1;
   player = new Player(w/6, h-h/6);
-  //testBar = new Bar(460, 60);
   for(int i=0; i<24; i++) 
   {
     Bars.add(new Bar(float(i*24), barHeight, speedX));  
@@ -40,7 +44,6 @@ void draw()
       Bars.get(i).display();      
     }
   }
+  player.update();
   player.display();
-  //testBar.update(mouseY);
-  //testBar.display();
 }
