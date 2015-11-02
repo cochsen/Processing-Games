@@ -1,8 +1,9 @@
-int heightCount;
+int heightCount, interval, intervalCounter;
 float w, h, barWidth, speedX, speedY, gravity, barHeight;
 float lastHeight, heightSum, momentum;
 Player player;
 ArrayList<Bar> Bars = new ArrayList<Bar>();
+ArrayList<Boulder> Boulders = new ArrayList<Boulder>();
 
 void setup()
 {
@@ -19,6 +20,7 @@ void setup()
   lastHeight = h-h/6;
   heightSum = 1;
   momentum = 1;
+  interval = int(random(w/speedX, 4*w/speedX));
   player = new Player(w/6, h-h/6);
   for(int i=0; i<24; i++) 
   {
@@ -46,4 +48,28 @@ void draw()
   }
   player.update();
   player.display();
+  rectMode(CORNER);
+  fill(200);
+  if(intervalCounter>=interval)
+  {
+    Boulders.add(new Boulder(w, random(-10, 3*h/4)));
+    interval = int(random(w/speedX, 4*w/speedX));
+    intervalCounter = 0;
+  }
+  for(int i=0; i<Boulders.size(); i++)
+  {
+    if(Boulders.get(i).xend<0-2*barWidth)
+    {
+      Boulders.remove(i);  
+      println("Boulder removed");
+    }
+    else 
+    {
+      Boulders.get(i).update();      
+      Boulders.get(i).display();      
+    }
+  }
+  intervalCounter++;
+  println("Interval: " + interval + ", Interval counter: " + intervalCounter);
+  println("Boulders size: " + Boulders.size());
 }
