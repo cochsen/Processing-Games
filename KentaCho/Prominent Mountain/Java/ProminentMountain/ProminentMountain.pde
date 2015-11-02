@@ -37,7 +37,7 @@ void draw()
     if(Bars.get(i).xpos<0-2*barWidth)
     {
       barHeight = random(mouseY, h);
-      Bars.add(new Bar(22*24, barHeight, speedX));
+      Bars.add(new Bar(21*24, barHeight, speedX));
       Bars.remove(i);  
     }
     else
@@ -68,8 +68,21 @@ void draw()
       Boulders.get(i).update();      
       Boulders.get(i).display();      
     }
+    detectCollisions();
   }
   intervalCounter++;
   println("Interval: " + interval + ", Interval counter: " + intervalCounter);
   println("Boulders size: " + Boulders.size());
+}
+
+void detectCollisions()
+{
+  for(int i=0; i<Boulders.size(); i++)
+  {
+    if(player.xpos>Boulders.get(i).xpos && player.xpos<Boulders.get(i).xpos+440 && player.ypos>Boulders.get(i).ypos && player.ypos<Boulders.get(i).ypos+120)
+    {
+      speedX = 0;
+      text("Game Over", w/2, h/2);
+    }
+  }
 }

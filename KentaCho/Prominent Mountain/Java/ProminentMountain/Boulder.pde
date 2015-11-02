@@ -7,7 +7,7 @@ class Boulder
   {
     xpos = _xpos;
     ypos = _ypos;
-    boulderW = 24*20;
+    boulderW = 440;
     boulderH = 120;
     xend = xpos+w;
   }
