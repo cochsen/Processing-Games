@@ -5,6 +5,7 @@ Player player;
 ArrayList<Bar> Bars = new ArrayList<Bar>();
 ArrayList<Boulder> Boulders = new ArrayList<Boulder>();
 PImage img;
+PFont zerovelo;
 
 void setup()
 {
@@ -24,6 +25,9 @@ void setup()
   interval = int(random(w/speedX, 4*w/speedX));
   img = loadImage("temp-moon-rover.png");
   player = new Player(img, w/6, h-h/6);
+  zerovelo = createFont("zerovelo.ttf", 32);
+  textFont(zerovelo);
+  textAlign(CENTER, CENTER);
   for(int i=0; i<24; i++) 
   {
     Bars.add(new Bar(float(i*24), barHeight, speedX));  
