@@ -4,6 +4,7 @@ float lastHeight, heightSum, momentum;
 Player player;
 ArrayList<Bar> Bars = new ArrayList<Bar>();
 ArrayList<Boulder> Boulders = new ArrayList<Boulder>();
+PImage img;
 
 void setup()
 {
@@ -21,7 +22,8 @@ void setup()
   heightSum = 1;
   momentum = 1;
   interval = int(random(w/speedX, 4*w/speedX));
-  player = new Player(w/6, h-h/6);
+  img = loadImage("temp-moon-rover.png");
+  player = new Player(img, w/6, h-h/6);
   for(int i=0; i<24; i++) 
   {
     Bars.add(new Bar(float(i*24), barHeight, speedX));  
@@ -81,6 +83,7 @@ void detectCollisions()
   {
     if(player.xpos>Boulders.get(i).xpos && player.xpos<Boulders.get(i).xpos+440 && player.ypos>Boulders.get(i).ypos && player.ypos<Boulders.get(i).ypos+120)
     {
+      player.explode();
       speedX = 0;
       text("Game Over", w/2, h/2);
     }
