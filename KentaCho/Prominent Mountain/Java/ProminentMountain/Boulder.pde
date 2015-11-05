@@ -1,7 +1,7 @@
 class Boulder
 {
     
-  float xpos, ypos, boulderW, boulderH, xend;
+  float xpos, ypos, boulderW, boulderH, xend, yend;
   
   Boulder(float _xpos, float _ypos)
   {
@@ -10,6 +10,7 @@ class Boulder
     boulderW = 440;
     boulderH = 120;
     xend = xpos+w;
+    yend = ypos+h;
   }
   
   void update()

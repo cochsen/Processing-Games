@@ -41,12 +41,12 @@ class Player
   
   void update() 
   {
-    if(frameCount%((barWidth/speedX)) == 0)
+    if(exploding == false && frameCount%((barWidth/speedX)) == 0)
     {
       if(ypos<lastHeight)
       {
         heightSum += lastHeight-ypos;
-        momentum = heightSum/heightCount;  
+        momentum = 0.5*heightSum/heightCount;  
         heightCount++;
         lastHeight = ypos;
       }
@@ -66,17 +66,7 @@ class Player
     if(exploding == false)
     {
       rectMode(CENTER);
-      //fill(127);
-      //rect(xpos, ypos, 40, 40);
       image(img, xpos, ypos, 40, 40);
-    }
-    else
-    {
-      if(mousePressed)
-      {
-        Boulders.clear();
-        setup();  
-      }
     }
   }
 
@@ -100,7 +90,7 @@ class Player
           pushMatrix();
           translate(x+pxdir[i][j], y+pydir[i][j]);
           fill(c, 204);
-          noStroke();
+          //noStroke();
           rectMode(CENTER);
           rect(xpos-img.width/2, ypos-img.height/2, pSizes[i][j], pSizes[i][j]);
           popMatrix();
@@ -110,9 +100,9 @@ class Player
       }
       counter++;
     }
-    /*
     else
     {
+      state = 0;
       exploding = false;
       counter = 0;
       cellSize = 4;
@@ -125,8 +115,15 @@ class Player
           pydir[i][j] = random(-10,10);
           pSizes[i][j] = cellSize;
         }
-      }    
+      }
+      Boulders.clear();  
+      speedX = 12.0;
+      speedY = 0.1;
+      gravity = 0.1;
+      heightCount = 1;
+      lastHeight = h-h/6;
+      heightSum = 1;
+      momentum = 1;
     }
-    */
   }    
 }
