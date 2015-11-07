@@ -2,8 +2,8 @@
  *  0 - Title screen state, touch activates state 1
  *  1 - Game state, collision activates state 0
  */
-
-int state, heightCount, interval, intervalCounter;
+boolean counterOn;
+int state, heightCount, interval, intervalCounter, counter;
 float w, h, barWidth, speedX, speedY, gravity, barHeight;
 float lastHeight, heightSum, momentum;
 Player player;
@@ -18,6 +18,7 @@ void setup()
   frameRate(60);
   background(0);
   w=width; h=height;
+  
   state = 0;
   barWidth=w/20;
   barHeight = h-h/6;
@@ -44,23 +45,24 @@ void setup()
 void draw()
 {
   background(0);
-  if(state == 1)
+  for(int i=0; i<Bars.size(); i++)
+  {
+    if(Bars.get(i).xpos<0-2*barWidth)
     {
-    for(int i=0; i<Bars.size(); i++)
-    {
-      if(Bars.get(i).xpos<0-2*barWidth)
-      {
-        barHeight = random(mouseY, h);
-        Bars.add(new Bar(21*24, barHeight, speedX));
-        Bars.remove(i);  
-      }
-      else
-      {
-        Bars.get(i).update(mouseX, mouseY, speedX);
-        Bars.get(i).display();      
-      }
+      barHeight = random(mouseY, h);
+      Bars.add(new Bar(21*24, barHeight, speedX));
+      Bars.remove(i);  
     }
+    else
+    {
+      Bars.get(i).update(mouseX, mouseY, speedX);
+      Bars.get(i).display();      
+    }
+  }  
+  if(state == 1)
+  {
     player.update();
+    println("Player xpos: " + player.xpos + ", Player ypos: " + player.ypos);
     player.display();
     rectMode(CORNER);
     fill(200);
@@ -79,11 +81,14 @@ void draw()
       else 
       {
         Boulders.get(i).update();      
+        println("Boulder xpos: " + Boulders.get(i).xpos + " Boulder ypos: " + Boulders.get(i).ypos + " Boulder xend: " + Boulders.get(i).xend + " Boulder yend: " + Boulders.get(i).yend);
         Boulders.get(i).display();      
       }
       detectCollisions();
     }
+    player.explode();
     intervalCounter++;
+    println("player.exploding: " + player.exploding + "counterOn: " + counterOn);
   }
   else
   {
@@ -98,9 +103,9 @@ void detectCollisions()
   {
     if(player.xpos>Boulders.get(i).xpos && player.xpos<Boulders.get(i).xend && player.ypos>Boulders.get(i).ypos && player.ypos<Boulders.get(i).yend)
     {
-      player.explode();
+      counterOn = true;
       //speedX = 0;
-      text("Game Over", w/2, h/2);
+      break;
     }
   }
 }

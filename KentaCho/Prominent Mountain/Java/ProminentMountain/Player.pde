@@ -1,7 +1,6 @@
 class Player
 {
   boolean exploding;
-  int counter;
   int cellSize;
   int columns, rows;
   float xpos, ypos;
@@ -63,7 +62,7 @@ class Player
   
   void display()
   {
-    if(exploding == false)
+    if(state == 1 && counterOn == false)
     {
       rectMode(CENTER);
       image(img, xpos, ypos, 40, 40);
@@ -72,8 +71,7 @@ class Player
 
   void explode()
   {
-    exploding=true;
-    if(counter<frameRate/2)
+    if(counterOn && counter<frameRate/2)
     {
       for(int i=0; i<columns; i++)
       {
@@ -94,16 +92,18 @@ class Player
           rectMode(CENTER);
           rect(xpos-img.width/2, ypos-img.height/2, pSizes[i][j], pSizes[i][j]);
           popMatrix();
+          text("Game Over", w/2, h/2);
           pxdir[i][j] = pxdir[i][j] + 0.1*pxdir[i][j];
           pydir[i][j] = pydir[i][j] + 0.1*pydir[i][j];        
         }
       }
       counter++;
     }
-    else
+    else if(counterOn)
     {
-      state = 0;
+      counterOn = false;
       exploding = false;
+      state = 0;
       counter = 0;
       cellSize = 4;
       for(int i=0; i<columns; i++)
@@ -124,6 +124,6 @@ class Player
       lastHeight = h-h/6;
       heightSum = 1;
       momentum = 1;
-    }
-  }    
+    }  
+  }
 }
