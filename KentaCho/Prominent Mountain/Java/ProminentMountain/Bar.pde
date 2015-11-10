@@ -29,6 +29,8 @@ class Bar
       {
         player.ypos += speedY - 0.3*momentum;
         speedY += gravity;
+        if(state == 1 && ypos-player.ypos>100)
+          score+=int(0.1*(ypos-player.ypos));
       }
       else
       {
