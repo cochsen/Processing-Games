@@ -3,22 +3,22 @@
  *  1 - Game state, collision activates state 0
  */
 boolean counterOn;
-int state, heightCount, interval, intervalCounter, counter;
+int state, heightCount, interval, intervalCounter, counter, score;
 float w, h, barWidth, speedX, speedY, gravity, barHeight;
 float lastHeight, heightSum, momentum;
 Player player;
 ArrayList<Bar> Bars = new ArrayList<Bar>();
 ArrayList<Boulder> Boulders = new ArrayList<Boulder>();
 PImage img;
-PFont zerovelo;
+PFont zerovelo, zeroveloSmall;
 
 void setup()
 {
-  size(480, 480);
+  size(480,480,P2D);
   frameRate(60);
   background(#000028);
   w=width; h=height;
-  
+  score = 0;
   state = 0;
   barWidth=w/20;
   barHeight = h-h/6;
@@ -30,10 +30,10 @@ void setup()
   heightSum = 1;
   momentum = 1;
   interval = int(random(w/speedX, 4*w/speedX));
-  img = loadImage("temp-moon-rover.png");
+  img = loadImage("rover-pixelated.png");
   player = new Player(img, w/6, h-h/6);
-  zerovelo = createFont("zerovelo.ttf", 32);
-  textFont(zerovelo);
+  zerovelo = createFont("zerovelo.ttf", h/10);
+  zeroveloSmall = createFont("zerovelo.ttf", h/24);
   textAlign(CENTER, CENTER);
   for(int i=0; i<24; i++) 
   {
@@ -95,16 +95,20 @@ void draw()
   else
   {
     fill(0,0,200);
+    textFont(zerovelo);
     text("Prominent\nMountain", w/2, h/2);  
     if(mousePressed) state = 1;
   }
+  fill(200,0,0);
+  textFont(zeroveloSmall);
+  text(score, w/2, h/20);
 }
 
 void detectCollisions()
 {
   for(int i=0; i<Boulders.size(); i++)
   {
-    if(player.xpos>Boulders.get(i).xpos && player.xpos<Boulders.get(i).xend && player.ypos>Boulders.get(i).ypos && player.ypos-40<Boulders.get(i).yend)
+    if(player.xpos>Boulders.get(i).xpos && player.xpos<Boulders.get(i).xend && player.ypos>Boulders.get(i).ypos && player.ypos-27<Boulders.get(i).yend)
     {
       counterOn = true;
       //speedX = 0;
