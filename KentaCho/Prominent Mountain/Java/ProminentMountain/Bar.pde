@@ -41,7 +41,7 @@ class Bar
   void display()
   {
     rectMode(CORNER);
-    fill(225);   
+    fill(#5CE200);   
     rect(xpos-barHalfWidth, ypos, barWidth, h-ypos);
   }
 }

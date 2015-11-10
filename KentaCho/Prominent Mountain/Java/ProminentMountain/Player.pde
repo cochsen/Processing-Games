@@ -16,7 +16,7 @@ class Player
     // attributes associated with explosion method
     exploding = false;
     counter = 0;
-    cellSize = 4;
+    cellSize = 8;
     columns = img.width / cellSize;
     rows = img.height / cellSize;
     pxdir = new float[columns][rows];
@@ -27,7 +27,7 @@ class Player
     // initialization of arrays
     for(int i=0; i<columns; i++)
     {
-      println();
+      //println();
       for(int j=0; j<rows; j++)
       {
         pxdir[i][j] = random(-10,10);
@@ -42,30 +42,47 @@ class Player
   {
     if(exploding == false && frameCount%((barWidth/speedX)) == 0)
     {
-      if(ypos<lastHeight)
+      if(ypos<lastHeight && momentum<20)
+      {
+        heightSum += lastHeight-ypos;
+        momentum = 20;  
+        heightCount++;
+        lastHeight = ypos;
+      }
+      else if(ypos<lastHeight)
       {
         heightSum += lastHeight-ypos;
         momentum = 0.5*heightSum/heightCount;  
         heightCount++;
-        lastHeight = ypos;
+        lastHeight = ypos;          
       }
-      else if(ypos>lastHeight)
+      else if(ypos == lastHeight || ypos>lastHeight)
       {
         heightSum = 1;
         heightCount = 1;
         lastHeight = ypos;
         momentum = 1;
+        speedX+=0.1;
       }
     }    
-    println("momentum: " + momentum + ", count: " + heightCount);
+    //println("momentum: " + momentum + ", count: " + heightCount);
   }
   
   void display()
   {
     if(state == 1 && counterOn == false)
     {
-      rectMode(CENTER);
-      image(img, xpos, ypos, 40, 40);
+      rectMode(CORNER);
+      if(lastHeight-ypos>h/20) // momentum>5
+      {
+        pushMatrix();
+        translate(xpos-40, ypos-40);
+        rotate(-PI/3.0);
+        image(img, 0, 0, 40, 40);
+        popMatrix();
+      }
+      else
+        image(img, xpos-40, ypos-40, 40, 40);
     }
   }
 
@@ -82,17 +99,16 @@ class Player
           float loc = x+y*img.width;
           color c = img.pixels[int(loc)];
           if(counter<frameRate/4)
-            pSizes[i][j] = pSizes[i][j] + 0.5*pScaling[i][j];
+            pSizes[i][j] = pSizes[i][j] + 3*pScaling[i][j];
           else
-            pSizes[i][j] = pSizes[i][j] - 0.5*pScaling[i][j];
+            pSizes[i][j] = pSizes[i][j] - 3*pScaling[i][j];
           pushMatrix();
           translate(x+pxdir[i][j], y+pydir[i][j]);
           fill(c, 204);
-          //noStroke();
           rectMode(CENTER);
           rect(xpos-img.width/2, ypos-img.height/2, pSizes[i][j], pSizes[i][j]);
           popMatrix();
-          text("Game Over", w/2, h/2);
+          //text("Game Over", w/2, h/2);
           pxdir[i][j] = pxdir[i][j] + 0.1*pxdir[i][j];
           pydir[i][j] = pydir[i][j] + 0.1*pydir[i][j];        
         }
@@ -108,7 +124,7 @@ class Player
       cellSize = 4;
       for(int i=0; i<columns; i++)
       {
-        println();
+        //println();
         for(int j=0; j<rows; j++)
         {
           pxdir[i][j] = random(-10,10);

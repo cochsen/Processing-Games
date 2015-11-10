@@ -16,13 +16,13 @@ void setup()
 {
   size(480, 480);
   frameRate(60);
-  background(0);
+  background(#000028);
   w=width; h=height;
   
   state = 0;
   barWidth=w/20;
   barHeight = h-h/6;
-  speedX = 12.0;
+  speedX = 8.0;
   speedY = 0.1;
   gravity = 0.1;
   heightCount = 1;
@@ -44,7 +44,7 @@ void setup()
 
 void draw()
 {
-  background(0);
+  background(#000028);
   for(int i=0; i<Bars.size(); i++)
   {
     if(Bars.get(i).xpos<0-2*barWidth)
@@ -62,7 +62,7 @@ void draw()
   if(state == 1)
   {
     player.update();
-    println("Player xpos: " + player.xpos + ", Player ypos: " + player.ypos);
+    //println("Player xpos: " + player.xpos + ", Player ypos: " + player.ypos);
     player.display();
     rectMode(CORNER);
     fill(200);
@@ -81,17 +81,20 @@ void draw()
       else 
       {
         Boulders.get(i).update();      
-        println("Boulder xpos: " + Boulders.get(i).xpos + " Boulder ypos: " + Boulders.get(i).ypos + " Boulder xend: " + Boulders.get(i).xend + " Boulder yend: " + Boulders.get(i).yend);
+        //println("Boulder xpos: " + Boulders.get(i).xpos + " Boulder ypos: " + Boulders.get(i).ypos + " Boulder xend: " + Boulders.get(i).xend + " Boulder yend: " + Boulders.get(i).yend);
         Boulders.get(i).display();      
       }
       detectCollisions();
     }
     player.explode();
     intervalCounter++;
-    println("player.exploding: " + player.exploding + "counterOn: " + counterOn);
+    //println("player.exploding: " + player.exploding + "counterOn: " + counterOn);
+    println("Momentum: " + momentum);
+    println("Speed: " + speedX);
   }
   else
   {
+    fill(0,0,200);
     text("Prominent\nMountain", w/2, h/2);  
     if(mousePressed) state = 1;
   }
@@ -101,7 +104,7 @@ void detectCollisions()
 {
   for(int i=0; i<Boulders.size(); i++)
   {
-    if(player.xpos>Boulders.get(i).xpos && player.xpos<Boulders.get(i).xend && player.ypos>Boulders.get(i).ypos && player.ypos<Boulders.get(i).yend)
+    if(player.xpos>Boulders.get(i).xpos && player.xpos<Boulders.get(i).xend && player.ypos>Boulders.get(i).ypos && player.ypos-40<Boulders.get(i).yend)
     {
       counterOn = true;
       //speedX = 0;
