@@ -1,8 +1,7 @@
 class Player
 {
   boolean exploding;
-  int cellSize;
-  int columns, rows;
+  int cellSize, columns, rows;
   float xpos, ypos;
   float[][] pxdir, pydir, pSizes, pScaling;
   PImage img;
@@ -22,12 +21,11 @@ class Player
     pxdir = new float[columns][rows];
     pydir = new float[columns][rows];
     pSizes = new float[columns][rows];
-    pScaling = new float[columns][rows];      
+    pScaling = new float[columns][rows];
     
-    // initialization of arrays
+    // initialization
     for(int i=0; i<columns; i++)
     {
-      //println();
       for(int j=0; j<rows; j++)
       {
         pxdir[i][j] = random(-10,10);
@@ -35,26 +33,27 @@ class Player
         pSizes[i][j] = cellSize;
         pScaling[i][j] = random(1);
       }
-    }       
+    }
   }
   
   void update() 
   {
-    if(exploding == false && frameCount%((barWidth/speedX)) == 0)
+    if(frameCount%((barWidth/speedX)) == 0)
     {
       if(ypos<lastHeight && momentum<20)
       {
         heightSum += lastHeight-ypos;
-        momentum = 20;  
+        momentum = heightSum/heightCount;  
         heightCount++;
         lastHeight = ypos;
       }
       else if(ypos<lastHeight)
       {
         heightSum += lastHeight-ypos;
-        momentum = 0.5*heightSum/heightCount;  
+        momentum = 0.5*heightSum/heightCount;
         heightCount++;
-        lastHeight = ypos;          
+        lastHeight = ypos;
+        speedX -= 0.1*(lastHeight-ypos);
       }
       else if(ypos == lastHeight || ypos>lastHeight)
       {
@@ -62,30 +61,27 @@ class Player
         heightCount = 1;
         lastHeight = ypos;
         momentum = 1;
-        speedX+=0.1;
+        speedX += 0.01;
       }
     }    
-    //println("momentum: " + momentum + ", count: " + heightCount);
+    println("momentum: " + momentum + ", count: " + heightCount);
   }
   
   void display()
   {
-    if(state == 1 && counterOn == false)
+    rectMode(CORNER);
+    if(lastHeight-ypos>h/20) // momentum>5
     {
-      rectMode(CORNER);
-      if(lastHeight-ypos>h/20) // momentum>5
-      {
-        pushMatrix();
-        translate(xpos-40, ypos-40);
-        rotate(-PI/3.0);
-        image(img, 0, 0, 40, 40);
-        popMatrix();
-      }
-      else
-        image(img, xpos-40, ypos-40, 40, 40);
+      pushMatrix();
+      translate(xpos-40, ypos-40);
+      rotate(-PI/3.0);
+      image(img, 0, 0, 40, 27);
+      popMatrix();
     }
+    else
+      image(img, xpos-40, ypos-27, 40, 27);
   }
-
+  
   void explode()
   {
     if(counterOn && counter<frameRate/2)
@@ -133,13 +129,14 @@ class Player
         }
       }
       Boulders.clear();  
-      speedX = 12.0;
+      speedX = 8.0;
       speedY = 0.1;
       gravity = 0.1;
       heightCount = 1;
       lastHeight = h-h/6;
       heightSum = 1;
       momentum = 1;
+      score = 0;
     }  
   }
 }

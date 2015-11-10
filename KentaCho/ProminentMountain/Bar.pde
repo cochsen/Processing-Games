@@ -23,12 +23,14 @@ class Bar
     {
       ypos = _y;
     }
-    if(xpos>w/6-20 && xpos<w/6+20)
+    if(xpos>w/6-w/24 && xpos<w/6+w/24)
     {
       if(player.ypos<ypos)
       {
         player.ypos += speedY - 0.3*momentum;
         speedY += gravity;
+        if(state == 1 && ypos-player.ypos>100)
+          score += int(0.1*(ypos-player.ypos));
       }
       else
       {

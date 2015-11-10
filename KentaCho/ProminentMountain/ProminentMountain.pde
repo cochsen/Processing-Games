@@ -1,43 +1,36 @@
-/*  States
- *  0 - Title screen state, touch activates state 1
- *  1 - Game state, collision activates state 0
- */
 boolean counterOn;
-int state, heightCount, interval, intervalCounter, counter;
+int state, counter, score, heightCount, interval, intervalCounter;
 float w, h, barWidth, speedX, speedY, gravity, barHeight;
 float lastHeight, heightSum, momentum;
 Player player;
 ArrayList<Bar> Bars = new ArrayList<Bar>();
 ArrayList<Boulder> Boulders = new ArrayList<Boulder>();
 PImage img;
-PFont zerovelo;
+PFont zerovelo1, zerovelo2;
 
 void setup()
 {
-  size(480, 480);
+  size(displayWidth, displayWidth, P2D);
   frameRate(60);
   background(#000028);
-  w=width; h=height;
-  
-  state = 0;
-  barWidth=w/20;
-  barHeight = h-h/6;
-  speedX = 8.0;
-  speedY = 0.1;
-  gravity = 0.1;
+  w = width; h = height;
+  score = 0; state = 0;
+  barWidth = w/20; barHeight = h-h/6;
+  speedX = w/40; speedY = w/4800;
+  gravity = w/4800;
   heightCount = 1;
   lastHeight = h-h/6;
   heightSum = 1;
   momentum = 1;
   interval = int(random(w/speedX, 4*w/speedX));
-  img = loadImage("temp-moon-rover.png");
+  img = loadImage("rover-pixelated.png");
   player = new Player(img, w/6, h-h/6);
-  zerovelo = createFont("zerovelo.ttf", 32);
-  textFont(zerovelo);
+  zerovelo1 = createFont("zerovelo.ttf", h/10);
+  zerovelo2 = createFont("zerovelo.ttf", h/24);
   textAlign(CENTER, CENTER);
-  for(int i=0; i<24; i++) 
+  for(int i=0; i<20; i++) 
   {
-    Bars.add(new Bar(float(i*24), barHeight, speedX));  
+    Bars.add(new Bar(float(i)*w/20, barHeight, speedX));  
     barHeight = h-h/6;
   }
 }
@@ -50,7 +43,7 @@ void draw()
     if(Bars.get(i).xpos<0-2*barWidth)
     {
       barHeight = random(mouseY, h);
-      Bars.add(new Bar(21*24, barHeight, speedX));
+      Bars.add(new Bar(19*w/20, barHeight, speedX));
       Bars.remove(i);  
     }
     else
@@ -58,11 +51,10 @@ void draw()
       Bars.get(i).update(mouseX, mouseY, speedX);
       Bars.get(i).display();      
     }
-  }  
+  }
   if(state == 1)
   {
     player.update();
-    //println("Player xpos: " + player.xpos + ", Player ypos: " + player.ypos);
     player.display();
     rectMode(CORNER);
     fill(200);
@@ -77,37 +69,39 @@ void draw()
       if(Boulders.get(i).xend<0-2*barWidth)
       {
         Boulders.remove(i);  
+        println("Boulder removed");
       }
       else 
       {
         Boulders.get(i).update();      
-        //println("Boulder xpos: " + Boulders.get(i).xpos + " Boulder ypos: " + Boulders.get(i).ypos + " Boulder xend: " + Boulders.get(i).xend + " Boulder yend: " + Boulders.get(i).yend);
         Boulders.get(i).display();      
       }
       detectCollisions();
     }
     player.explode();
     intervalCounter++;
-    //println("player.exploding: " + player.exploding + "counterOn: " + counterOn);
-    println("Momentum: " + momentum);
-    println("Speed: " + speedX);
+    println("Interval: " + interval + ", Interval counter: " + intervalCounter);
+    println("Boulders size: " + Boulders.size());    
   }
   else
   {
     fill(0,0,200);
-    text("Prominent\nMountain", w/2, h/2);  
-    if(mousePressed) state = 1;
+    textFont(zerovelo1);
+    text("Prominent\nMountain", w/2, h/2);
+    if(mousePressed) state=1;
   }
+  fill(200,0,0);
+  textFont(zerovelo1);
+  text(score, w/2, h/20);
 }
 
 void detectCollisions()
 {
   for(int i=0; i<Boulders.size(); i++)
   {
-    if(player.xpos>Boulders.get(i).xpos && player.xpos<Boulders.get(i).xend && player.ypos>Boulders.get(i).ypos && player.ypos-40<Boulders.get(i).yend)
+    if(player.xpos>Boulders.get(i).xpos && player.xpos<Boulders.get(i).xend && player.ypos>Boulders.get(i).ypos && player.ypos<Boulders.get(i).yend)
     {
       counterOn = true;
-      //speedX = 0;
       break;
     }
   }
