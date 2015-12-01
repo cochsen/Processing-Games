@@ -3,6 +3,7 @@ int state, heightCount, interval, intervalCounter, counter, score;
 float w, h, ow, oh, barWidth, speedX, speedY, ascentSpeed, gravity, barHeight;
 float lastHeight, heightSum, momentum;
 Player player;
+ArrayList<Mtn> Mtns = new ArrayList<Mtn>();
 ArrayList<Bar> Bars = new ArrayList<Bar>();
 ArrayList<Boulder> Boulders = new ArrayList<Boulder>();
 PImage img;
@@ -41,13 +42,34 @@ void setup()
     Bars.add(new Bar(i*w/20, barHeight, speedX));  
     barHeight = h-h/6;
   }
+  for(int i=0; i<4; i++)
+  {
+    Mtns.add(new Mtn(int(random(3)), i*w/2, h));  
+  }
 }
 
 void draw()
 {
   background(#000028);
+  // change vertical speed
   if(frameCount % 360 == 0)
     changeAscent(int(random(100)));
+  // background layer 1
+  for(int i=0; i<Mtns.size(); i++)
+  {
+    float xpos = Mtns.get(i).xpos;
+    Mtns.get(i).display();     
+    float len = Mtns.get(i).xend;
+    if(xpos<0-len)
+    {
+      Mtns.remove(i);
+      Mtns.add(new Mtn(int(random(3)), w, h));
+    }
+    else
+    {
+      Mtns.get(i).update(speedX, ascentSpeed); 
+    }
+  }
   for(int i=0; i<Bars.size(); i++)
   {
     if(Bars.get(i).xpos<0-2*barWidth)

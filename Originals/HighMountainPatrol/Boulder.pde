@@ -18,6 +18,7 @@ class Boulder
     xpos = xpos - speedX; 
     xend = xpos+boulderW;
     ypos = ypos + _asc;
+    yend = yend + _asc;
   }
   
   void display()
