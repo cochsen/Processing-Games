@@ -13,10 +13,11 @@ class Boulder
     yend = ypos+boulderH;
   }
   
-  void update()
+  void update(float _asc)
   {
     xpos = xpos - speedX; 
     xend = xpos+boulderW;
+    ypos = ypos + _asc;
   }
   
   void display()

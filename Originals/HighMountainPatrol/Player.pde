@@ -55,7 +55,7 @@ class Player
         momentum = 0.5*heightSum/heightCount;  
         heightCount++;
         lastHeight = ypos;          
-        speedX-=0.1*(lastHeight-ypos);
+        speedX-=0.1*(w/480)*(lastHeight-ypos);
       }
       else if(ypos == lastHeight || ypos>lastHeight)
       {
@@ -63,7 +63,7 @@ class Player
         heightCount = 1;
         lastHeight = ypos;
         momentum = 1;
-        speedX+=0.01;
+        speedX+=0.01*w/480;
       }
     }
   }
@@ -133,9 +133,15 @@ class Player
         }
       }
       Boulders.clear();  
-      speedX = 5.0;
-      speedY = 0.1;
-      gravity = 0.1;
+      Bars.clear();
+      for(int i=0; i<22; i++) 
+      {
+        Bars.add(new Bar(i*w/20, barHeight, speedX));  
+        barHeight = h-h/6;
+      }      
+      speedX = 5.0*w/ow;
+      speedY = 0.1*h/oh;
+      gravity = 0.1*h/oh;
       heightCount = 1;
       lastHeight = h-h/6;
       heightSum = 1;

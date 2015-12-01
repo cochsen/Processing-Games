@@ -1,6 +1,6 @@
 boolean counterOn;
 int state, heightCount, interval, intervalCounter, counter, score;
-float w, h, barWidth, speedX, speedY, ascentSpeed, gravity, barHeight;
+float w, h, ow, oh, barWidth, speedX, speedY, ascentSpeed, gravity, barHeight;
 float lastHeight, heightSum, momentum;
 Player player;
 ArrayList<Bar> Bars = new ArrayList<Bar>();
@@ -12,6 +12,7 @@ void settings()
 {
   size(displayWidth,displayWidth,P2D);  
   w = h = displayWidth;
+  ow = oh = 480;
 }
 
 void setup()
@@ -22,9 +23,9 @@ void setup()
   state = 0;
   barWidth=w/20;
   barHeight = h-h/6;
-  speedX = 5;
-  speedY = 0.002*w;
-  gravity = 0.1;
+  speedX = 5.0*w/ow;
+  speedY = 0.002*h/oh;
+  gravity = 0.1*h/oh;
   heightCount = 1;
   lastHeight = h-h/6;
   heightSum = 1;
@@ -52,7 +53,7 @@ void draw()
     if(Bars.get(i).xpos<0-2*barWidth)
     {
       barHeight = random(mouseY, h);
-      Bars.add(new Bar(w, barHeight, speedX));
+      Bars.add(new Bar(w-speedX, barHeight, speedX));
       Bars.remove(i);  
     }
     else
@@ -82,7 +83,7 @@ void draw()
       }
       else 
       {
-        Boulders.get(i).update();      
+        Boulders.get(i).update(ascentSpeed);      
         //println("Boulder xpos: " + Boulders.get(i).xpos + " Boulder ypos: " + Boulders.get(i).ypos + " Boulder xend: " + Boulders.get(i).xend + " Boulder yend: " + Boulders.get(i).yend);
         Boulders.get(i).display();      
       }
