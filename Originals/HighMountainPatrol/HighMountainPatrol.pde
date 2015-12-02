@@ -4,6 +4,7 @@ float w, h, ow, oh, barWidth, speedX, speedY, ascentSpeed, gravity, barHeight;
 float lastHeight, heightSum, momentum;
 Player player;
 ArrayList<Mtn> Mtns = new ArrayList<Mtn>();
+ArrayList<Mtn> Trees = new ArrayList<Mtn>();
 ArrayList<Bar> Bars = new ArrayList<Bar>();
 ArrayList<Boulder> Boulders = new ArrayList<Boulder>();
 PImage img;
@@ -24,7 +25,7 @@ void setup()
   state = 0;
   barWidth=w/20;
   barHeight = h-h/6;
-  speedX = 5.0*w/ow;
+  speedX = 10.0*w/ow;
   speedY = 0.002*h/oh;
   gravity = 0.1*h/oh;
   heightCount = 1;
@@ -46,6 +47,10 @@ void setup()
   {
     Mtns.add(new Mtn(int(random(3)), i*w/2, h));  
   }
+  for(int i=0; i<4; i++)
+  {
+    Trees.add(new Mtn(int(random(3,6)), i*w/2, h));  
+  }  
 }
 
 void draw()
@@ -54,7 +59,7 @@ void draw()
   // change vertical speed
   if(frameCount % 360 == 0)
     changeAscent(int(random(100)));
-  // background layer 1
+  // background layer 1 (mountains)
   for(int i=0; i<Mtns.size(); i++)
   {
     float xpos = Mtns.get(i).xpos;
@@ -70,6 +75,23 @@ void draw()
       Mtns.get(i).update(speedX, ascentSpeed); 
     }
   }
+  // background layer 2 (trees)
+  for(int i=0; i<Trees.size(); i++)
+  {
+    float xpos = Trees.get(i).xpos;
+    Trees.get(i).display();     
+    float len = Trees.get(i).xend;
+    if(xpos<0-len)
+    {
+      Trees.remove(i);
+      Trees.add(new Mtn(int(random(3,6)), w, h));
+    }
+    else
+    {
+      Trees.get(i).update(speedX, ascentSpeed); 
+    }
+  }  
+  // Bars
   for(int i=0; i<Bars.size(); i++)
   {
     if(Bars.get(i).xpos<0-2*barWidth)

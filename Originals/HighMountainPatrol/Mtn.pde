@@ -2,32 +2,64 @@ class Mtn
 {
   int type;
   float xpos, ypos, xend;
-  float increment = 3*h/58;
-  float segmentWidth = w/58;
+  float increment, segmentWidth;
+  color c1, c2;
   
   Mtn(int type, float xpos, float ypos)
   {
     this.type = type;
     this.xpos = xpos;
     this.ypos = ypos;
+    if(type < 3)
+    {
+      this.increment = 3*h/58;
+      this.segmentWidth = w/58;
+      this.c1 = color(#001400);
+      this.c2 = color(#3F1900);
+    }
+    else
+    {
+      this.increment = 3*h/64;
+      this.segmentWidth = w/64;
+      this.c2 = color(#001400);
+      this.c1 = color(#3F1900);      
+    }    
     switch(type)
     {
       case 0:
-        xend = 28*segmentWidth;
+        this.xend = 28*segmentWidth;
         break;
       case 1:
-        xend = 40*segmentWidth;
+        this.xend = 40*segmentWidth;
         break;
       case 2:
-        xend = 42*segmentWidth;
+        this.xend = 42*segmentWidth;
         break;
+      case 3:
+        this.xend = 28*segmentWidth;
+        break;
+      case 4:
+        this.xend = 40*segmentWidth;
+        break;
+      case 5:
+        this.xend = 42*segmentWidth;
+        break;        
     }
   }
   
   void update(float speed, float ascent)
   {
-    xpos -= speed*0.01;
-    ypos += ascent*0.01;
+    if(type < 3)
+    {
+      xpos -= speed*0.01;
+      ypos += ascent*0.01;     
+    }
+    else
+    {
+      xpos -= speed*0.5;
+      ypos += ascent*0.5;        
+    }
+
   }
   
   void display()
@@ -43,13 +75,22 @@ class Mtn
       case 2:
         drawMountainC(xpos, ypos);
         break;
+      case 3:
+        drawMountainA(xpos, ypos);
+        break;
+      case 4:
+        drawMountainB(xpos, ypos);
+        break;
+      case 5:
+        drawMountainC(xpos, ypos);
+        break;        
     }
   }
   
   void drawMountainA(float x, float y)
   {
-    stroke(#001400);
-    fill(#001400);
+    stroke(c1);
+    fill(c1);
     for(int i=0; i<29; i++)
     {
       if(i<=14)
@@ -57,8 +98,8 @@ class Mtn
       else
         rect(x+i*segmentWidth, y, segmentWidth, -(14*increment - (i-14)*increment));
     }
-    stroke(#3F1900);
-    fill(#3F1900);
+    stroke(c2);
+    fill(c2);
     for(int i=1; i<27; i++)
     {
       if(i<=13)
@@ -70,8 +111,8 @@ class Mtn
   
   void drawMountainB(float x, float y)
   {
-    stroke(#001400);
-    fill(#001400);
+    stroke(c1);
+    fill(c1);
     for(int i=0; i<41; i++)
     {
       if(i<=14)
@@ -83,8 +124,8 @@ class Mtn
       else
         rect(x+i*segmentWidth, y, segmentWidth, -(14*increment - (i-24)*increment));
     }
-    stroke(#3F1900);
-    fill(#3F1900);
+    stroke(c2);
+    fill(c2);
     for(int i=1; i<39; i++)
     {
       if(i<=13)
@@ -101,8 +142,8 @@ class Mtn
   void drawMountainC(float x, float y)
   {
     // peak 1
-    stroke(#001400);
-    fill(#001400);
+    stroke(c1);
+    fill(c1);
     for(int i=0; i<29; i++)
     {
       if(i<=14)
@@ -110,8 +151,8 @@ class Mtn
       else
         rect(x+i*segmentWidth, y, segmentWidth, -(14*increment - (i-14)*increment));
     }
-    stroke(#3F1900);
-    fill(#3F1900);
+    stroke(c2);
+    fill(c2);
     for(int i=1; i<27; i++)
     {
       if(i<=13)
@@ -123,8 +164,8 @@ class Mtn
     // peak 2
     x = x + 14*segmentWidth;
     y = y + 3*increment;
-    stroke(#001400);
-    fill(#001400);
+    stroke(c1);
+    fill(c1);
     for(int i=0; i<29; i++)
     {
       if(i<=14)
@@ -132,8 +173,8 @@ class Mtn
       else
         rect(x+i*segmentWidth, y, segmentWidth, -(14*increment - (i-14)*increment));
     }
-    stroke(#3F1900);
-    fill(#3F1900);
+    stroke(c2);
+    fill(c2);
     for(int i=1; i<27; i++)
     {
       if(i<=13)

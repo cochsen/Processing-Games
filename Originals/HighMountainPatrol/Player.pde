@@ -139,7 +139,7 @@ class Player
         Bars.add(new Bar(i*w/20, barHeight, speedX));  
         barHeight = h-h/6;
       }      
-      speedX = 5.0*w/ow;
+      speedX = 10.0*w/ow;
       speedY = 0.1*h/oh;
       gravity = 0.1*h/oh;
       heightCount = 1;
