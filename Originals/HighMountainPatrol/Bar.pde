@@ -7,7 +7,7 @@ class Bar
     xpos = _x;
     ypos = _y;
     speed = _s;
-    barWidth = w/20;
+    barWidth = w/16;
     barHalfWidth = barWidth/2;
     barHeight = 0;
     mousePosX = 0;

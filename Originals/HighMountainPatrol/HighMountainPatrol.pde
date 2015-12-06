@@ -1,5 +1,5 @@
 boolean counterOn;
-int state, heightCount, interval, intervalCounter, counter, score;
+int state, heightCount, interval, intervalCounter, counter, score, pickupCounter, pickupCount;
 float w, h, ow, oh, barWidth, speedX, speedY, ascentSpeed, gravity, barHeight;
 float lastHeight, heightSum, momentum;
 Player player;
@@ -7,7 +7,9 @@ ArrayList<Mtn> Mtns = new ArrayList<Mtn>();
 ArrayList<Mtn> Trees = new ArrayList<Mtn>();
 ArrayList<Bar> Bars = new ArrayList<Bar>();
 ArrayList<Boulder> Boulders = new ArrayList<Boulder>();
+ArrayList<Pickup> Pickups = new ArrayList<Pickup>();
 PImage img;
+PImage[] pickupTypes;
 PFont zerovelo, zeroveloSmall;
 
 void settings()
@@ -23,10 +25,10 @@ void setup()
   background(#000028);
   score = 0;
   state = 0;
-  barWidth=w/20;
+  barWidth=w/16;
   barHeight = h-h/6;
   speedX = 10.0*w/ow;
-  speedY = 0.002*h/oh;
+  speedY = 1*h/oh;
   gravity = 0.1*h/oh;
   heightCount = 1;
   lastHeight = h-h/6;
@@ -38,9 +40,9 @@ void setup()
   zerovelo = createFont("zerovelo.ttf", h/10);
   zeroveloSmall = createFont("zerovelo.ttf", h/24);
   textAlign(CENTER, CENTER);
-  for(int i=0; i<22; i++) 
+  for(int i=0; i<18; i++) 
   {
-    Bars.add(new Bar(i*w/20, barHeight, speedX));  
+    Bars.add(new Bar(i*w/16, barHeight, speedX));  
     barHeight = h-h/6;
   }
   for(int i=0; i<4; i++)
@@ -51,6 +53,12 @@ void setup()
   {
     Trees.add(new Mtn(int(random(3,6)), i*w/2, h));  
   }  
+  pickupCounter = 0;
+  pickupCount = 300 + int(random(200));
+  pickupTypes = new PImage[3];
+  pickupTypes[0] = loadImage("coin.png");
+  pickupTypes[1] = loadImage("emerald.png");
+  pickupTypes[2] = loadImage("goldbars.png");
 }
 
 void draw()
@@ -91,6 +99,15 @@ void draw()
       Trees.get(i).update(speedX, ascentSpeed); 
     }
   }  
+  // Create Pickups
+  if(pickupCount < pickupCounter)
+    pickupCount++;
+  else
+  {
+    pickupCount = 0;
+    int type = int(random(3));
+    Pickups.add(new Pickup(pickupTypes[type], w, random(h)));
+  }
   // Bars
   for(int i=0; i<Bars.size(); i++)
   {
@@ -106,6 +123,9 @@ void draw()
       Bars.get(i).display();      
     }
   }  
+  // Show Pickups
+  for(int i=0; i<Pickups.size(); i++)
+    Pickups.get(i).display();
   if(state == 1)
   {
     player.update();
@@ -136,8 +156,9 @@ void draw()
     player.explode();
     intervalCounter++;
     //println("player.exploding: " + player.exploding + "counterOn: " + counterOn);
-    println("Momentum: " + momentum);
-    println("Speed: " + speedX);
+    //println("Momentum: " + momentum);
+    //println("Speed: " + speedX);
+    println("lastHeight: " + lastHeight + ", ypos: " + player.ypos);
   }
   else
   {
@@ -165,31 +186,24 @@ void detectCollisions()
       //speedX = 0;
       break;
     }
+  }
+}
 
-    /*
-    if(player.ypos>h)
+void detectPickup()
+{
+  for(int i=0; i<Pickups.size(); i++)
+  {
+    if((player.xpos>Pickups.get(i).xpos && player.xpos<Pickups.get(i).xend && player.ypos>Pickups.get(i).ypos && player.ypos-27<Pickups.get(i).yend) || player.ypos>h)
     {
-      counterOn = false;
-      state = 0;
-      counter = 0;
-      Boulders.clear();  
-      speedX = 5.0;
-      speedY = 0.1;
-      gravity = 0.1;
-      heightCount = 1;
-      lastHeight = h-h/6;
-      heightSum = 1;
-      momentum = 1;
-      score = 0;
+        
     }
-    */
   }
 }
 
 void changeAscent(int change)
 {
     if(change<76)
-      ascentSpeed = random(0, 2.5);
+      ascentSpeed = h/oh*random(0, 5);
     else
-      ascentSpeed = random(0, 1);
+      ascentSpeed = -h/oh*random(0, 2.5);
 }

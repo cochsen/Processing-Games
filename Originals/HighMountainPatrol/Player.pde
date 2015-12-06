@@ -24,10 +24,9 @@ class Player
     pSizes = new float[columns][rows];
     pScaling = new float[columns][rows];      
     
-    // initialization of arrays
+    // initialization of arrays for explosion
     for(int i=0; i<columns; i++)
     {
-      //println();
       for(int j=0; j<rows; j++)
       {
         pxdir[i][j] = random(-10,10);
@@ -42,28 +41,30 @@ class Player
   {
     if(exploding == false) // && frameCount%5 == 0
     {
-      if(ypos<lastHeight && momentum<20)
+      if(ypos<lastHeight && momentum>=20)
       {
         heightSum += lastHeight-ypos;
         momentum = 20;  
         heightCount++;
         lastHeight = ypos;
+        speedX -= 0.01*(w/ow); // *(lastHeight-ypos);
       }
       else if(ypos<lastHeight)
       {
         heightSum += lastHeight-ypos;
-        momentum = 0.5*heightSum/heightCount;  
+        // calculate momentum
+        momentum += 0.5; // 0.5*heightSum/heightCount;  
         heightCount++;
         lastHeight = ypos;          
-        speedX-=0.1*(w/480)*(lastHeight-ypos);
+        speedX -= 0.01*(w/ow); // *(lastHeight-ypos);
       }
-      else if(ypos == lastHeight || ypos>lastHeight)
+      else if((ypos == lastHeight) || (ypos>lastHeight))
       {
         heightSum = 1;
         heightCount = 1;
         lastHeight = ypos;
         momentum = 1;
-        speedX+=0.01*w/480;
+        speedX += 0.01*w/ow;
       }
     }
   }
