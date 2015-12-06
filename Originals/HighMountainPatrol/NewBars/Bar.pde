@@ -26,7 +26,6 @@ class Bar
       ypos = _y;
     }    
   }
-
   
   void display()
   {

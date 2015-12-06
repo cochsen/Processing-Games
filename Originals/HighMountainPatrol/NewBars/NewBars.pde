@@ -39,11 +39,8 @@ void draw()
       //Bars.add(new Bar(w-speedX, barHeight, speedX));
      // Bars.remove(i);  
     }
-    else
-    {
-      Bars[i].update(mouseX, mouseY, speedX, ascentSpeed);
-      Bars[i].display();      
-    }
+    Bars[i].update(mouseX, mouseY, speedX, ascentSpeed);
+    Bars[i].display(); 
   }    
 }
 
@@ -59,8 +56,27 @@ void changeAscent(int change)
 void keyPressed()
 {
   if(key == 'a')
+  {
     speedX += 0.2;  
+    println("Speed x: " + speedX);
+  }
   if(key == 's')
+  {
     speedX -= 0.2;
-  println("Speed x: " + speedX);
+    println("Speed x: " + speedX);
+  }
+  if(key == 'r')
+    realign();
+}
+
+void realign()
+{
+  Bars[0].xpos = round(Bars[0].xpos);
+  for(int i=1; i<22; i++) 
+  {
+    if(Bars[i].xpos>Bars[0].xpos)
+      Bars[i].xpos = Bars[0].xpos + i*barWidth;
+    else
+      Bars[i].xpos = Bars[0].xpos - (22-i)*barWidth;
+  }
 }
