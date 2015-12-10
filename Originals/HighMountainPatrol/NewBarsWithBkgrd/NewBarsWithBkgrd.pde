@@ -1,4 +1,4 @@
-float w, h, ow, oh;
+float w, h, ow, oh, rw, rh;
 float barWidth, barHeight, speedX, speedXdelta, ascentSpeed;
 Manager manager;
 Bar[] Bars;
@@ -9,6 +9,8 @@ void settings()
   size(displayWidth,displayWidth,P2D);  
   w = h = displayWidth;
   ow = oh = 480;
+  rw = w/480;
+  rh = h/480;
 }
 
 void setup()
