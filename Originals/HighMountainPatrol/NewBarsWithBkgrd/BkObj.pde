@@ -2,7 +2,7 @@ class BkObj
 {
   int type;
   float xpos, ypos, xend;
-  float increment, segmentWidth;
+  float increment, segmentWidth, maxObjWidth;
   color c1, c2;
   
   BkObj(int type, float xpos, float ypos)
@@ -45,19 +45,20 @@ class BkObj
         this.xend = 42*segmentWidth;
         break;        
     }
+    maxObjWidth = 42*segmentWidth;
   }
   
   void update(float speed, float ascent)
   {
     if(type < 3)
     {
-      xpos -= 0.1*speed;
-      ypos += 0.1*ascent;     
+      xpos -= 0.05*speed;
+      ypos += 0.01*ascent;     
     }
     else
     {
-      xpos -= speed;
-      ypos += ascent;        
+      xpos -= 0.25*speed;
+      ypos += 0.05*ascent;        
     }
 
   }

@@ -35,4 +35,5 @@ class Bar
     fill(#5CE200);   
     rect(xpos-barHalfWidth, ypos, barWidth, h-ypos);
   }
+
 }
