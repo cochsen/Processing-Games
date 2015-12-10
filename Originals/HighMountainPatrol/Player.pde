@@ -3,7 +3,7 @@ class Player
   boolean exploding;
   int cellSize;
   int columns, rows;
-  float xpos, ypos;
+  float xpos, ypos, imagew, imageh;
   float[][] pxdir, pydir, pSizes, pScaling;
   PImage img;
   
@@ -12,6 +12,8 @@ class Player
     xpos = _x;
     ypos = _y;
     img = _img;
+    imagew = img.width * w/ow;
+    imageh = img.height * h/oh;
     
     // attributes associated with explosion method
     exploding = false;
@@ -79,7 +81,7 @@ class Player
         pushMatrix();
         translate(xpos-40, ypos-40);
         rotate(-PI/3.0);
-        image(img, 0, 0, 40, 27);
+        image(img, 0, 0, imagew, imageh);
         popMatrix();
       }
       else
