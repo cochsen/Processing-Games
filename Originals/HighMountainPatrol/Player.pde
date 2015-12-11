@@ -1,26 +1,27 @@
 class Player
 {
-  boolean exploding;
+  boolean snapshot, exploding;
   int cellSize;
   int columns, rows;
-  float xpos, ypos, imagew, imageh;
+  float xpos, ypos, xoffset, yoffset;
   float[][] pxdir, pydir, pSizes, pScaling;
+  color c1, c2, window;
   PImage img;
   
-  Player(PImage _img, float _x, float _y)
+  Player(float _x, float _y)
   {
     xpos = _x;
     ypos = _y;
-    img = _img;
-    imagew = img.width * w/ow;
-    imageh = img.height * h/oh;
+    xoffset = 24 * w/ow;
+    yoffset = 15 * h/oh;  
     
     // attributes associated with explosion method
+    snapshot = false;
     exploding = false;
     counter = 0;
     cellSize = 8;
-    columns = img.width / cellSize;
-    rows = img.height / cellSize;
+    columns = int(xoffset / cellSize);
+    rows = int(yoffset / cellSize);
     pxdir = new float[columns][rows];
     pydir = new float[columns][rows];
     pSizes = new float[columns][rows];
@@ -79,14 +80,46 @@ class Player
       if(lastHeight-ypos>h/20) // momentum>5
       {
         pushMatrix();
-        translate(xpos-40, ypos-40);
+        translate(xpos, ypos);
         rotate(-PI/3.0);
-        image(img, 0, 0, imagew, imageh);
+        drawRover();
+        //image(img, 0, 0, imagew, imageh);
         popMatrix();
       }
       else
-        image(img, xpos-40, ypos-27, 40, 27);
+        drawRover();
+        if(snapshot == false)
+          getImage();
+        //image(img, xpos-w/ow*24, ypos-h/oh*15, 40, 27);
     }
+  }
+
+  void drawRover()
+  {
+    c1 = color(#7FB7BE);
+    c2 = color(#DACC3E);
+    window = color(#D3F3EE);
+    stroke(c1);
+    fill(c1);
+    rectMode(CORNER);
+    rect(xpos+rw*5, ypos-yoffset+rw*3, rw*16, rw*7);
+    rect(xpos+rw*0, ypos-yoffset+rw*3, rw*5, rw*5);
+    rect(xpos+rw*5, ypos-yoffset+rw*0, rw*10, rw*3);
+    rect(xpos+rw*4, ypos-yoffset+rw*1, rw*11, rw*2);
+    stroke(window);
+    fill(window);
+    rect(xpos+rw*9, ypos-yoffset+rw*1, rw*5, rw*2);
+    stroke(c2);
+    fill(c2);
+    ellipseMode(CORNER);
+    ellipse(xpos+rw*2, ypos-yoffset+rw*5, rw*10, rw*10);
+    ellipse(xpos+rw*14, ypos-yoffset+rw*5, rw*10, rw*10);    
+  }
+
+  void getImage()
+  {
+    img = get(int(xpos), int(ypos-yoffset), int(xoffset), int(yoffset));  
+    snapshot = true;
   }
 
   void explode()

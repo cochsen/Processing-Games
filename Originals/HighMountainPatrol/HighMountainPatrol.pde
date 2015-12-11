@@ -1,6 +1,6 @@
 boolean counterOn;
 int state, heightCount, interval, intervalCounter, counter, score, pickupCounter, pickupCount;
-float w, h, ow, oh, barWidth, speedX, speedY, ascentSpeed, gravity, barHeight;
+float w, h, ow, oh, rw, rh, barWidth, speedX, speedY, ascentSpeed, gravity, barHeight;
 float lastHeight, heightSum, momentum;
 Player player;
 ArrayList<Mtn> Mtns = new ArrayList<Mtn>();
@@ -17,6 +17,8 @@ void settings()
   size(displayWidth,displayWidth,P2D);  
   w = h = displayWidth;
   ow = oh = 480;
+  rw = w/ow;
+  rh = h/oh;
 }
 
 void setup()
@@ -36,7 +38,7 @@ void setup()
   momentum = 1;
   interval = int(random(w/speedX, 4*w/speedX));
   img = loadImage("rover-pixelated.png");
-  player = new Player(img, w/6, h-h/6);
+  player = new Player(w/6, h-h/6);
   zerovelo = createFont("zerovelo.ttf", h/10);
   zeroveloSmall = createFont("zerovelo.ttf", h/24);
   textAlign(CENTER, CENTER);

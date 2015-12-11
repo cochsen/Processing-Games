@@ -17,7 +17,7 @@ void setup()
 {
   frameRate(60);
   background(#000028);
-  speedX = speedXdelta = 1*w/ow;
+  speedX = speedXdelta = 1*rw;
   ascentSpeed = 0;
   barWidth=w/20;
   barHeight = h-h/6;
@@ -31,11 +31,11 @@ void setup()
   BkObjs = new BkObj[7];
   for(int i=0; i<4; i++)
   {
-    BkObjs[i] = new BkObj(int(random(3)), i*200*w/ow + random(200), h);  
+    BkObjs[i] = new BkObj(int(random(3)), i*200*rw + random(200), h);  
   }
   for(int i=4; i<7; i++)
   {
-    BkObjs[i] = new BkObj(int(random(3, 6)), i*200*w/ow + random(200), h);  
+    BkObjs[i] = new BkObj(int(random(3, 6)), i*200*rw + random(200), h);  
   }  
 }
 
