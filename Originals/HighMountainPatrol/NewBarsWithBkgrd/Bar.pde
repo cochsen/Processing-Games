@@ -29,7 +29,7 @@ class Bar
     {
       if(player.ypos<ypos)
       {
-        player.ypos += speedY - 0.3*rh;  
+        player.ypos += speedY;  
         speedY += gravity;
       }
       else

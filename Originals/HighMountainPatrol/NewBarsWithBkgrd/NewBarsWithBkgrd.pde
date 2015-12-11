@@ -18,29 +18,11 @@ void settings()
 void setup()
 {
   frameRate(60);
-  background(#000028);
-  speedX = speedXdelta = 1*rw;
-  speedY = 1*rh;
-  gravity = 0.1*rh;
-  ascentSpeed = 0;
-  barWidth=w/20;
-  barHeight = h-h/6;
-  player = new Player(w/6, h-h/6);
-  Bars = new Bar[22];
-  manager = new Manager();
-  for(int i=0; i<22; i++) 
-  {
-    Bars[i] = new Bar(i*barWidth, barHeight, speedX);  
-  }
-  BkObjs = new BkObj[7];
-  for(int i=0; i<4; i++)
-  {
-    BkObjs[i] = new BkObj(int(random(3)), i*200*rw + random(200), h);  
-  }
-  for(int i=4; i<7; i++)
-  {
-    BkObjs[i] = new BkObj(int(random(3, 6)), i*200*rw + random(200), h);  
-  }  
+  manager = new Manager();  
+  manager.setupEnvironment();
+  manager.setupBackgroundObjects();
+  manager.setupBars();
+  manager.setupPlayer();
 }
 
 void draw()
