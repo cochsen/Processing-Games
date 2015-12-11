@@ -1,8 +1,10 @@
 float w, h, ow, oh, rw, rh;
-float barWidth, barHeight, speedX, speedXdelta, ascentSpeed;
-Manager manager;
+float barWidth, barHeight, speedX, speedXdelta, speedY, gravity, ascentSpeed;
+Player player;
 Bar[] Bars;
 BkObj[] BkObjs;
+Manager manager;
+
 
 void settings()
 {
@@ -18,11 +20,13 @@ void setup()
   frameRate(60);
   background(#000028);
   speedX = speedXdelta = 1*rw;
+  speedY = 1*rh;
+  gravity = 0.1*rh;
   ascentSpeed = 0;
   barWidth=w/20;
   barHeight = h-h/6;
+  player = new Player(w/6, h-h/6);
   Bars = new Bar[22];
-  barHeight = h-h/6;
   manager = new Manager();
   for(int i=0; i<22; i++) 
   {
@@ -51,6 +55,7 @@ void draw()
     }
   manager.manageBackgrounds();
   manager.manageBars();
+  player.display();
 }
 
 void realign()

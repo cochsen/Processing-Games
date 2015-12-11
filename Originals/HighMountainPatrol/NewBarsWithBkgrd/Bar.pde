@@ -24,7 +24,20 @@ class Bar
     if(xpos>mousePosX-barHalfWidth && xpos<mousePosX+barHalfWidth)
     {
       ypos = _y;
-    }    
+    }   
+    if(xpos>w/6-20 && xpos<w/6+20)
+    {
+      if(player.ypos<ypos)
+      {
+        player.ypos += speedY - 0.3*rh;  
+        speedY += gravity;
+      }
+      else
+      {
+        player.ypos = ypos;
+        speedY = 1;
+      }
+    }
   }
   
   void display()
@@ -35,5 +48,4 @@ class Bar
     fill(#5CE200);   
     rect(xpos-barHalfWidth, ypos, barWidth, h-ypos);
   }
-
 }
