@@ -25,8 +25,9 @@ class Bar
     {
       ypos = _y;
     }   
-    if(xpos>w/6-20 && xpos<w/6+20)
+    if(xpos>w/6 && xpos<w/6+w/20)
     {
+      player.lastypos = player.ypos;
       if(player.ypos<ypos)
       {
         player.ypos += speedY;  

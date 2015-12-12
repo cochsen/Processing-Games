@@ -6,7 +6,7 @@ class Manager
     background(#000028);
     speedX = speedXdelta = 1*rw;
     speedY = 1*rh;
-    gravity = 0.2*rh;
+    gravity = 0.4*rh;
     ascentSpeed = 0;
   }
   

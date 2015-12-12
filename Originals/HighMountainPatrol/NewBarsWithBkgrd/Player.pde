@@ -2,17 +2,22 @@ class Player
 {
   boolean snapshot, exploding;
   int cellSize, columns, rows, counter;
-  float xpos, ypos, xoffset, yoffset;
+  float xpos, ypos, lastypos, xoffset, yoffset;
+  float avg0, avg1;
+  float[] trpos;
   float[][] pxdir, pydir, pSizes, pScaling;
   color c1, c2, c3;
   PImage img;
   
-  Player(float mx, float my)
+  Player(float x, float y)
   {
-    xpos = mx;
-    ypos = my;
-    xoffset = 24*rw;
-    yoffset = 15*rh;
+    xpos = x;
+    ypos = lastypos = y;
+    xoffset = 48*rw;
+    yoffset = 30*rh;
+    trpos = new float[4];
+    for(int i=0; i<4; i++)
+      trpos[i] = y;
     
     // explosion method attributes
     snapshot = false;
@@ -39,17 +44,34 @@ class Player
     }       
   }
   
+  void checkVertical()
+  {
+
+  }
+  
   void update()
   {
     if(exploding == false)
-    {
-
+    { 
+      trpos[3] = trpos[2];
+      trpos[2] = trpos[1];      
+      trpos[1] = trpos[0]; 
+      trpos[0] = ypos;           
     }
+    avg0 = (trpos[0] + trpos[1] + trpos[2])/3;
+    avg1 = (trpos[1] + trpos[2] + trpos[3])/3;
   }
   
   void display()
   {
+    pushMatrix();
+    translate(xpos, ypos);
+    if(ypos > lastypos)
+      rotate(-2*PI/(ypos/lastypos));
+    else
+      rotate(-2*PI/(avg0/avg1));
     drawRover();
+    popMatrix();
     if(snapshot == false)
       getImage();
   }
@@ -62,18 +84,18 @@ class Player
       stroke(c1);
       fill(c1);
       rectMode(CORNER);
-      rect(xpos+rw*5, ypos-yoffset+rw*3, rw*16, rw*7);
-      rect(xpos+rw*0, ypos-yoffset+rw*3, rw*5, rw*5);
-      rect(xpos+rw*5, ypos-yoffset+rw*0, rw*10, rw*3);
-      rect(xpos+rw*4, ypos-yoffset+rw*1, rw*11, rw*2);
+      rect(rw*10, -yoffset+rw*6, rw*32, rw*14);
+      rect(rw*0, -yoffset+rw*6, rw*10, rw*10);
+      rect(rw*10, -yoffset+rw*0, rw*20, rw*6);
+      rect(rw*10, -yoffset+rw*2, rw*22, rw*4);
       stroke(c3);
       fill(c3);
-      rect(xpos+rw*9, ypos-yoffset+rw*1, rw*5, rw*2);
+      rect(rw*18, -yoffset+rw*2, rw*10, rw*4);
       stroke(c2);
       fill(c2);
       ellipseMode(CORNER);
-      ellipse(xpos+rw*2, ypos-yoffset+rw*5, rw*10, rw*10);
-      ellipse(xpos+rw*14, ypos-yoffset+rw*5, rw*10, rw*10);    
+      ellipse(rw*4, -yoffset+rw*10, rw*20, rw*20);
+      ellipse(rw*28, -yoffset+rw*10, rw*20, rw*20);    
     }    
     
     void getImage()

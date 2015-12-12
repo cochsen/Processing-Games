@@ -37,6 +37,7 @@ void draw()
     }
   manager.manageBackgrounds();
   manager.manageBars();
+  player.update();
   player.display();
 }
 
