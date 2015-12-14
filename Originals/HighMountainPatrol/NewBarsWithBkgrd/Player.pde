@@ -4,6 +4,7 @@ class Player
   int cellSize, columns, rows, counter;
   float xpos, ypos, lastypos, xoffset, yoffset;
   float avg0, avg1;
+  float barHeight, prevBarHeight;
   float[] trpos;
   float[][] pxdir, pydir, pSizes, pScaling;
   color c1, c2, c3;
@@ -44,11 +45,6 @@ class Player
     }       
   }
   
-  void checkVertical()
-  {
-
-  }
-  
   void update()
   {
     if(exploding == false)
@@ -60,6 +56,23 @@ class Player
     }
     avg0 = (trpos[0] + trpos[1] + trpos[2])/3;
     avg1 = (trpos[1] + trpos[2] + trpos[3])/3;
+    // speed conditions
+    // 1. cap speed at 30
+    // 2. speed cannot be negative (speedX >0)
+    // 3. going uphill slows you down
+    // 4. going downhill or straight speeds you up
+    if(prevBarHeight > barHeight)
+      speedX -= 0.01*(prevBarHeight-barHeight);
+    else if(prevBarHeight <= barHeight)
+      speedX += 0.03 + 0.01*(barHeight-prevBarHeight);
+    if(speedX < 0)
+      speedX = 0;
+    if(speedX > 30)
+      speedX = 30;
+    rectMode(CORNER);
+    stroke(200);
+    noFill();
+    rect(xpos, ypos-yoffset, xoffset, yoffset);
   }
   
   void display()
@@ -103,4 +116,14 @@ class Player
       img = get(int(xpos), int(ypos-yoffset), int(xoffset), int(yoffset));  
       snapshot = true;
     }    
+    
+    void setBarHeight(float y)
+    {
+      barHeight = y;  
+    }    
+    
+    void setPrevBarHeight(float y)
+    {
+      prevBarHeight = y;  
+    }
 }

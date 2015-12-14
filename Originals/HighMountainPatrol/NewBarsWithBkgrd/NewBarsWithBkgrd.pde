@@ -3,6 +3,7 @@ float barWidth, barHeight, speedX, speedXdelta, speedY, gravity, ascentSpeed;
 Player player;
 Bar[] Bars;
 BkObj[] BkObjs;
+Pickup[] PickupObjs;
 Manager manager;
 
 
@@ -23,6 +24,7 @@ void setup()
   manager.setupBackgroundObjects();
   manager.setupBars();
   manager.setupPlayer();
+  manager.setupPickups();
 }
 
 void draw()
@@ -37,8 +39,16 @@ void draw()
     }
   manager.manageBackgrounds();
   manager.manageBars();
+  manager.managePickups();
   player.update();
   player.display();
+  manager.detectPickups();
+  /*
+  println("player x: " + player.xpos + ", player y: " + player.ypos);
+  for(int i=0; i<PickupObjs.length; i++)
+    println("pickup " + i + " x: " + PickupObjs[i].xpos + "y: " + PickupObjs[i].ypos);
+  //println("speedX: " + speedX);
+  */
 }
 
 void realign()

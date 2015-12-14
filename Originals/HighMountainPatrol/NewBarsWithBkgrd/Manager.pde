@@ -1,10 +1,12 @@
 class Manager
 {
   
+  int pickupcounter = 0;
+  
   void setupEnvironment()
   {
     background(#000028);
-    speedX = speedXdelta = 1*rw;
+    speedX = speedXdelta = 4*rw;
     speedY = 1*rh;
     gravity = 0.4*rh;
     ascentSpeed = 0;
@@ -38,6 +40,42 @@ class Manager
   {
     player = new Player(w/6, h-h/6);
   }
+  
+  void setupPickups()
+  {
+    PickupObjs = new Pickup[4];
+    for(int i=0; i<PickupObjs.length; i++)
+    {
+      PickupObjs[i] = new Pickup(int(random(2)), i*200*rw + random(200), random(h));  
+    }
+  }
+  
+  void managePickups()
+  {
+    for(int i=0; i<PickupObjs.length; i++)
+    {
+      if(PickupObjs[i].xpos < -50*rw)  
+      {
+        PickupObjs[i].xpos = w + random(200);  
+      }
+      PickupObjs[i].update(speedX, ascentSpeed);
+      PickupObjs[i].display();
+    }
+  }
+  
+  void detectPickups()
+  {
+    for(int i=0; i<PickupObjs.length; i++)
+    {    
+      if(player.xpos>PickupObjs[i].xpos && player.xpos<PickupObjs[i].xend && 
+        ((player.ypos-player.yoffset>PickupObjs[i].ypos && player.ypos-player.yoffset<PickupObjs[i].yend) || (player.ypos>PickupObjs[i].ypos && player.ypos<PickupObjs[i].yend)))
+      {
+        speedX += 10*rw;  
+        pickupcounter += 1;
+        println("Overlapped: " + pickupcounter);
+      }
+    }
+  }    
   
   void manageBackgrounds()
   {
@@ -76,10 +114,36 @@ class Manager
   }  
   
   public class colorSets
-  {
+  { // player1 (body), player2 (wheels), background1 (bars), background2 (background obj), background3 (background obj), background4 (sky), obstacle1 (rock), obstacle2 (tree)
     color[] set1 = {};
-    color[] set2 = {};
+    color[] set2 = {color(#7fb7be), color(#dacc3e), color(#5CE200),  color(#bc2c1a), color(#7d1538), color(#000028)};
     color[] set3 = {};
   }
-   
+  
+   /*
+  void detectCollisions()
+  {
+    for(int i=0; i<Boulders.size(); i++)
+    {
+      if((player.xpos>Boulders.get(i).xpos && player.xpos<Boulders.get(i).xend && player.ypos>Boulders.get(i).ypos && player.ypos-27<Boulders.get(i).yend) || player.ypos>h)
+      {
+        counterOn = true;
+        //speedX = 0;
+        break;
+      }
+    }
+  }
+  
+  void detectPickup()
+  {
+    for(int i=0; i<Pickups.size(); i++)
+    {
+      if((player.xpos>Pickups.get(i).xpos && player.xpos<Pickups.get(i).xend && player.ypos>Pickups.get(i).ypos && player.ypos-27<Pickups.get(i).yend) || player.ypos>h)
+      {
+          
+      }
+    }
+  }   
+  */
+  
 }

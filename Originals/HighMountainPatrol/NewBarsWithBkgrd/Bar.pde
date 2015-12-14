@@ -25,8 +25,13 @@ class Bar
     {
       ypos = _y;
     }   
+    if(xpos<w/6 && xpos>w/6-w/20)
+    {
+      player.setPrevBarHeight(ypos);  
+    }
     if(xpos>w/6 && xpos<w/6+w/20)
     {
+      player.setBarHeight(ypos);
       player.lastypos = player.ypos;
       if(player.ypos<ypos)
       {
