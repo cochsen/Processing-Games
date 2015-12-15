@@ -15,17 +15,17 @@ class Coin extends Pickup
     if(pickupw>35*rw && expand == true)
     {
       expand = false;
-      pickupw -= 1;
+      pickupw -= 2;
     }
     else if(pickupw<5*rw && expand == false)
     {
       expand = true;
-      pickupw += 1;
+      pickupw += 2;
     }
     else if(expand == true)
-      pickupw += 1;
+      pickupw += 2;
     else
-      pickupw -= 1;  
+      pickupw -= 2;  
   }
   
   void display()

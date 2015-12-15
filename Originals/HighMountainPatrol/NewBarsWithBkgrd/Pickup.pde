@@ -1,4 +1,4 @@
-class Pickup
+abstract class Pickup
 {
   int value;
   float xpos, ypos, pickupw, pickuph, coinw, xend, yend;
@@ -9,7 +9,7 @@ class Pickup
   {
     xpos = _x;
     ypos = _y;
-    pickupw = coinw = w/20;
+    pickupw = coinw = w/22;
     pickuph = w/20;
     xend = xpos + pickupw;
     yend = ypos + pickuph;
@@ -21,6 +21,13 @@ class Pickup
     ascent = _asc;
     xpos = xpos - speed;
     xend = xpos + pickupw;  
+    ypos = ypos + ascent;
+    yend = ypos + pickuph;
+    if(xpos < -50*rw)  
+    {
+      xpos = w + random(480)*rw;   
+      ypos = random(h) + ascent;
+    }
   }
   
   void display()

@@ -61,14 +61,14 @@ class Player
     // 2. speed cannot be negative (speedX >0)
     // 3. going uphill slows you down
     // 4. going downhill or straight speeds you up
-    if(prevBarHeight - barHeight > 3*yoffset)
+    if(prevBarHeight - barHeight > yoffset)
       speedX -= 0.01*(prevBarHeight-barHeight);
     else if(prevBarHeight <= barHeight)
       speedX += 0.03 + 0.01*(barHeight-prevBarHeight);
     if(speedX < 0)
       speedX = 0;
-    if(speedX > 30)
-      speedX = 30;
+    if(speedX > 20*rw)
+      speedX = 20*rw;
     rectMode(CORNER);
     stroke(200);
     noFill();

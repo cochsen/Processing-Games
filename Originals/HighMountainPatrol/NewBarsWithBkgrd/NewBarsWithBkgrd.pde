@@ -19,7 +19,7 @@ void settings()
 
 void setup()
 {
-  frameRate(60);
+  frameRate(30);
   manager = new Manager();  
   manager.setupEnvironment();
   manager.setupBackgroundObjects();
@@ -48,8 +48,8 @@ void draw()
   println("player x: " + player.xpos + ", player y: " + player.ypos);
   for(int i=0; i<PickupObjs.length; i++)
     println("pickup " + i + " x: " + PickupObjs[i].xpos + "y: " + PickupObjs[i].ypos);
-  //println("speedX: " + speedX);
   */
+  println("speedX: " + speedX);  
 }
 
 void realign()
