@@ -43,15 +43,24 @@ class Manager
   
   void setupPickups()
   {
+    /*
     PickupObjs = new Pickup[4];
     for(int i=0; i<PickupObjs.length; i++)
     {
       PickupObjs[i] = new Pickup(int(random(2)), i*200*rw + random(200), random(h));  
     }
+    */
+    Coins = new Coin[2];
+    for(int i=0; i<Coins.length; i++)
+      Coins[i] = new Coin(i*200*rw + random(200)*rw, random(h));
+    Gems = new Gem[2];
+    for(int i=0; i<Coins.length; i++)
+      Gems[i] = new Gem(i*200*rw + random(200)*rw, random(h));
   }
   
   void managePickups()
   {
+    /*
     for(int i=0; i<PickupObjs.length; i++)
     {
       if(PickupObjs[i].xpos < -50*rw)  
@@ -61,10 +70,30 @@ class Manager
       PickupObjs[i].update(speedX, ascentSpeed);
       PickupObjs[i].display();
     }
+    */
+    for(int i=0; i<Coins.length; i++)
+    {
+      if(Coins[i].xpos < -50*rw)  
+      {
+        Coins[i].xpos = w + random(200);  
+      }
+      Coins[i].update(speedX, ascentSpeed);
+      Coins[i].display();    
+    }
+   for(int i=0; i<Gems.length; i++)
+    {
+      if(Gems[i].xpos < -50*rw)  
+      {
+        Gems[i].xpos = w + random(200);  
+      }
+      Gems[i].update(speedX, ascentSpeed);
+      Gems[i].display();    
+    }    
   }
   
   void detectPickups()
   {
+    /*
     for(int i=0; i<PickupObjs.length; i++)
     {    
       if(player.xpos>PickupObjs[i].xpos && player.xpos<PickupObjs[i].xend && 
@@ -75,6 +104,27 @@ class Manager
         println("Overlapped: " + pickupcounter);
       }
     }
+    */
+    for(int i=0; i<Coins.length; i++)
+    {    
+      if(player.xpos>Coins[i].xpos && player.xpos<Coins[i].xend && 
+        ((player.ypos-player.yoffset>Coins[i].ypos && player.ypos-player.yoffset<Coins[i].yend) || (player.ypos>Coins[i].ypos && player.ypos<Coins[i].yend)))
+      {
+        speedX += 10*rw;  
+        pickupcounter += 1;
+        println("Overlapped: " + pickupcounter);
+      }
+    }    
+    for(int i=0; i<Gems.length; i++)
+    {    
+      if(player.xpos>Gems[i].xpos && player.xpos<Gems[i].xend && 
+        ((player.ypos-player.yoffset>Gems[i].ypos && player.ypos-player.yoffset<Gems[i].yend) || (player.ypos>Gems[i].ypos && player.ypos<Gems[i].yend)))
+      {
+        speedX += 10*rw;  
+        pickupcounter += 1;
+        println("Overlapped: " + pickupcounter);
+      }
+    }      
   }    
   
   void manageBackgrounds()
@@ -108,7 +158,7 @@ class Manager
   void changeAscent(int change)
   {
     if(change<76)
-      ascentSpeed = h/oh*random(0, 5);
+      ascentSpeed = h/oh*random(0, 2.5);
     else
       ascentSpeed = -h/oh*random(0, 2.5);
   }  

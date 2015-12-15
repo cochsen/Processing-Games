@@ -3,7 +3,8 @@ float barWidth, barHeight, speedX, speedXdelta, speedY, gravity, ascentSpeed;
 Player player;
 Bar[] Bars;
 BkObj[] BkObjs;
-Pickup[] PickupObjs;
+Coin[] Coins;
+Gem[] Gems;
 Manager manager;
 
 
