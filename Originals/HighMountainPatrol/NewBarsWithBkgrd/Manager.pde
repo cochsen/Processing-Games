@@ -58,7 +58,9 @@ class Manager
       Coins[i].update(speedX, ascentSpeed);
       Gems[i].update(speedX, ascentSpeed);
       Coins[i].display();
+      Coins[i].captureEffect();
       Gems[i].display();    
+      Gems[i].captureEffect();
     }
   }
   
@@ -71,8 +73,11 @@ class Manager
       {
         speedX += 5*rw;  
         pickupcounter += 1;
+        Coins[i].effectxpos = Coins[i].xpos;
+        Coins[i].effectypos = Coins[i].ypos;        
         Coins[i].xpos = w + random(200);   
         Coins[i].ypos = random(h);
+        Coins[i].counterOn = true;
         println("Overlapped: " + pickupcounter);
       }
       if(player.xpos>Gems[i].xpos && player.xpos<Gems[i].xend && 
@@ -82,6 +87,7 @@ class Manager
         pickupcounter += 1;
         Gems[i].xpos = w + random(200);   
         Gems[i].ypos = random(h);
+        Gems[i].counterOn = true;
         println("Overlapped: " + pickupcounter);
       }      
     }       
