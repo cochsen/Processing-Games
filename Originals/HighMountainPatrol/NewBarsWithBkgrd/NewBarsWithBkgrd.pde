@@ -8,7 +8,8 @@ BkObj[] BkObjs;
 Coin[] Coins;
 Gem[] Gems;
 Manager manager;
-ArrayList<Boulder> Boulders = new ArrayList<Boulder>();
+Boulder[] Boulders;
+//ArrayList<Boulder> Boulders = new ArrayList<Boulder>();
 
 void settings()
 {
@@ -27,6 +28,7 @@ void setup()
   manager.setupBackgroundObjects();
   manager.setupBars();
   manager.setupPlayer();
+  manager.setupBoulders();
   manager.setupPickups();
 }
 
@@ -47,12 +49,6 @@ void draw()
   player.update();
   player.display();
   manager.detectPickups();
-
-  //println("player x: " + player.xpos + ", player y: " + player.ypos);
-  //for(int i=0; i<PickupObjs.length; i++)
-    //println("pickup " + i + " x: " + PickupObjs[i].xpos + "y: " + PickupObjs[i].ypos);
-  //println("speedX: " + speedX);  
-  println("interval: " + interval + "   , intervalCounter: " + intervalCounter + "   , Num of boulders: " + Boulders.size());
 }
 
 void realign()
@@ -69,9 +65,9 @@ void realign()
 
 void detectCollisions()
 {
-  for(int i=0; i<Boulders.size(); i++)
+  for(int i=0; i<Boulders.length; i++)
   {
-    if((player.xpos>Boulders.get(i).xpos && player.xpos<Boulders.get(i).xend && player.ypos>Boulders.get(i).ypos && player.ypos-27<Boulders.get(i).yend) || player.ypos>h)
+    if((player.xpos>Boulders[i].xpos && player.xpos<Boulders[i].xend && player.ypos>Boulders[i].ypos && player.ypos-27<Boulders[i].yend) || player.ypos>h)
     {
       collisionCounterOn = true;
       //speedX = 0;

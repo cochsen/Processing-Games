@@ -44,6 +44,13 @@ class Manager
     player = new Player(w/6, h-h/6);
   }
   
+  void setupBoulders()
+  {
+    Boulders = new Boulder[2];
+    for(int i=0; i<Boulders.length; i++)    
+      Boulders[i] = new Boulder(w, random(-10, 3*h/4), random(width/20, 12*width/20), random(width/20, 12*width/20), random(50), random(50), random(50), random(50));
+  }
+  
   void setupPickups()
   {
     Coins = new Coin[2];
@@ -126,29 +133,22 @@ class Manager
   
   void manageBoulders()
   {
-    if(intervalCounter>=interval)
+    for(int i=0; i<Boulders.length; i++)
     {
-      Boulders.add(new Boulder(w, random(-10, 3*h/4), random(width/20, 12*width/20), random(width/20, 12*width/20), random(50), random(50), random(50), random(50)));
-      interval = int(random(w/speedX, 4*w/speedX));
-      intervalCounter = 0;
-    }
-    for(int i=0; i<Boulders.size(); i++)
-    {
-      if(Boulders.get(i).xend<0-2*barWidth)
+      if(Boulders[i].xend<0-2*barWidth)
       {
-        Boulders.remove(i);  
+        Boulders[i].reposition();  
       }
       else 
       {
-        Boulders.get(i).update(ascentSpeed);      
+        Boulders[i].update(ascentSpeed);      
         //println("Boulder xpos: " + Boulders.get(i).xpos + " Boulder ypos: " + Boulders.get(i).ypos + " Boulder xend: " + Boulders.get(i).xend + " Boulder yend: " + Boulders.get(i).yend);
-        Boulders.get(i).display();      
+        Boulders[i].display();      
       }
       detectCollisions();
     }
-    intervalCounter++;
   }
-  
+
   void changeAscent(int change)
   {
     if(change<76)
