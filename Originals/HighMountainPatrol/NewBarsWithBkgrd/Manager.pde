@@ -10,6 +10,9 @@ class Manager
     speedY = 1*rh;
     gravity = 0.4*rh;
     ascentSpeed = 0;
+    interval = int(random(w/speedX, 4*w/speedX));
+    intervalCounter = 0;
+    collisionCounterOn = false;
   }
   
   void setupBars()
@@ -119,6 +122,31 @@ class Manager
       Bars[i].update(mouseX, mouseY, speedX, ascentSpeed);
       Bars[i].display(); 
     }     
+  }
+  
+  void manageBoulders()
+  {
+    if(intervalCounter>=interval)
+    {
+      Boulders.add(new Boulder(w, random(-10, 3*h/4), random(width/20, 12*width/20), random(width/20, 12*width/20), random(50), random(50), random(50), random(50)));
+      interval = int(random(w/speedX, 4*w/speedX));
+      intervalCounter = 0;
+    }
+    for(int i=0; i<Boulders.size(); i++)
+    {
+      if(Boulders.get(i).xend<0-2*barWidth)
+      {
+        Boulders.remove(i);  
+      }
+      else 
+      {
+        Boulders.get(i).update(ascentSpeed);      
+        //println("Boulder xpos: " + Boulders.get(i).xpos + " Boulder ypos: " + Boulders.get(i).ypos + " Boulder xend: " + Boulders.get(i).xend + " Boulder yend: " + Boulders.get(i).yend);
+        Boulders.get(i).display();      
+      }
+      detectCollisions();
+    }
+    intervalCounter++;
   }
   
   void changeAscent(int change)

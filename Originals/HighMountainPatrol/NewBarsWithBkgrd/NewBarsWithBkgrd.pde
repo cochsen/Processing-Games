@@ -1,3 +1,5 @@
+boolean collisionCounterOn;
+int interval, intervalCounter;
 float w, h, ow, oh, rw, rh;
 float barWidth, barHeight, speedX, speedXdelta, speedY, gravity, ascentSpeed;
 Player player;
@@ -6,7 +8,7 @@ BkObj[] BkObjs;
 Coin[] Coins;
 Gem[] Gems;
 Manager manager;
-
+ArrayList<Boulder> Boulders = new ArrayList<Boulder>();
 
 void settings()
 {
@@ -40,16 +42,17 @@ void draw()
     }
   manager.manageBackgrounds();
   manager.manageBars();
+  manager.manageBoulders();
   manager.managePickups();
   player.update();
   player.display();
   manager.detectPickups();
-  /*
-  println("player x: " + player.xpos + ", player y: " + player.ypos);
-  for(int i=0; i<PickupObjs.length; i++)
-    println("pickup " + i + " x: " + PickupObjs[i].xpos + "y: " + PickupObjs[i].ypos);
-  */
-  println("speedX: " + speedX);  
+
+  //println("player x: " + player.xpos + ", player y: " + player.ypos);
+  //for(int i=0; i<PickupObjs.length; i++)
+    //println("pickup " + i + " x: " + PickupObjs[i].xpos + "y: " + PickupObjs[i].ypos);
+  //println("speedX: " + speedX);  
+  println("interval: " + interval + "   , intervalCounter: " + intervalCounter + "   , Num of boulders: " + Boulders.size());
 }
 
 void realign()
@@ -63,6 +66,19 @@ void realign()
       Bars[i].xpos = Bars[0].xpos - (22-i)*barWidth;
   }
 } 
+
+void detectCollisions()
+{
+  for(int i=0; i<Boulders.size(); i++)
+  {
+    if((player.xpos>Boulders.get(i).xpos && player.xpos<Boulders.get(i).xend && player.ypos>Boulders.get(i).ypos && player.ypos-27<Boulders.get(i).yend) || player.ypos>h)
+    {
+      collisionCounterOn = true;
+      //speedX = 0;
+      break;
+    }
+  }
+}
 
 // test
 void keyPressed()
