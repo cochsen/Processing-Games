@@ -126,4 +126,65 @@ class Player
     {
       prevBarHeight = y;  
     }
+    
+  void explode()
+  {
+    if(collisionCounterOn && counter<frameRate/2)
+    {
+      for(int i=0; i<columns; i++)
+      {
+        for(int j=0; j<rows; j++)
+        {
+          float x = i*cellSize+cellSize/2;
+          float y = j*cellSize+cellSize/2;
+          float loc = x+y*img.width;
+          color c = img.pixels[int(loc)];
+          if(counter<frameRate/4)
+            pSizes[i][j] = pSizes[i][j] + 3*pScaling[i][j];
+          else
+            pSizes[i][j] = pSizes[i][j] - 3*pScaling[i][j];
+          pushMatrix();
+          translate(x+pxdir[i][j], y+pydir[i][j]);
+          fill(c, 204);
+          rectMode(CENTER);
+          rect(xpos-img.width/2, ypos-img.height/2, pSizes[i][j], pSizes[i][j]);
+          popMatrix();
+          //text("Game Over", w/2, h/2);
+          pxdir[i][j] = pxdir[i][j] + 0.1*pxdir[i][j];
+          pydir[i][j] = pydir[i][j] + 0.1*pydir[i][j];        
+        }
+      }
+      counter++;
+    }
+    else if(collisionCounterOn)
+    {
+      collisionCounterOn = false;
+      exploding = false;
+      //state = 0;
+      counter = 0;
+      cellSize = 4;
+      for(int i=0; i<columns; i++)
+      {
+        //println();
+        for(int j=0; j<rows; j++)
+        {
+          pxdir[i][j] = random(-10,10);
+          pydir[i][j] = random(-10,10);
+          pSizes[i][j] = cellSize;
+        }
+      }
+      //Boulders.clear();  
+      //Bars.clear();   
+      speedX = 10.0*w/ow;
+      speedY = 0.1*h/oh;
+      gravity = 0.1*h/oh;
+      /*
+      heightCount = 1;
+      lastHeight = h-h/6;
+      heightSum = 1;
+      momentum = 1;
+      score = 0;
+      */
+    }  
+  }       
 }

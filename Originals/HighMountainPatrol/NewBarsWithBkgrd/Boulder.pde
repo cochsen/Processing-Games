@@ -34,17 +34,8 @@ class Boulder
   
   void display()
   {
-    stroke(c1);
-    strokeWeight(4);
-    fill(c2);
     imageMode(CORNER);
     image(img, xpos, ypos, boulderw, boulderh);
-    //rect(xpos, ypos, boulderw, boulderh);
-    //rect(xpos, ypos, boulderw, boulderh, tl, tr, bl, br);  
-    strokeWeight(1);
-    stroke(255);
-    noFill();
-    rect(xpos, ypos, boulderw, boulderh);
   }
   
   void reposition()

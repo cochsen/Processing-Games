@@ -9,7 +9,6 @@ Coin[] Coins;
 Gem[] Gems;
 Manager manager;
 Boulder[] Boulders;
-//ArrayList<Boulder> Boulders = new ArrayList<Boulder>();
 
 void settings()
 {
@@ -49,6 +48,7 @@ void draw()
   player.update();
   player.display();
   manager.detectPickups();
+  player.explode();
 }
 
 void realign()
