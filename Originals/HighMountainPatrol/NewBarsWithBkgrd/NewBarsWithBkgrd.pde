@@ -1,5 +1,5 @@
 boolean collisionCounterOn;
-int interval, intervalCounter;
+int state, interval, intervalCounter;
 float w, h, ow, oh, rw, rh;
 float barWidth, barHeight, speedX, speedXdelta, speedY, gravity, ascentSpeed;
 Player player;
@@ -33,22 +33,28 @@ void setup()
 
 void draw()
 {
-  if(frameCount % 360 == 0)
-    manager.changeAscent(int(random(100)));
-  if(frameCount % 30 == 0)
-    if(abs(speedX - speedXdelta) > 1.0)
-    {
-      speedXdelta = speedX;
-      realign();
-    }
   manager.manageBackgrounds();
   manager.manageBars();
-  manager.manageBoulders();
-  manager.managePickups();
-  player.update();
-  player.display();
-  manager.detectPickups();
-  player.explode();
+  if(state == 1)
+  {
+    if(frameCount % 360 == 0)
+      manager.changeAscent(int(random(100)));
+    if(frameCount % 30 == 0)
+      if(abs(speedX - speedXdelta) > 1.0)
+      {
+        speedXdelta = speedX;
+        realign();
+      }
+    manager.manageBoulders();
+    manager.managePickups();
+    player.update();
+    if(collisionCounterOn == false)
+    {
+      player.display();
+      manager.detectPickups();
+    }
+    player.explode();
+  }
 }
 
 void realign()
@@ -91,4 +97,8 @@ void keyPressed()
   }
   if(key == 'r')
     realign();
+  if(key == '0')
+    state = 0;
+  if(key == '1')
+    state = 1;
 }

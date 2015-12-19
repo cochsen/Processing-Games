@@ -160,7 +160,6 @@ class Player
     {
       collisionCounterOn = false;
       exploding = false;
-      //state = 0;
       counter = 0;
       cellSize = 4;
       for(int i=0; i<columns; i++)
@@ -173,12 +172,14 @@ class Player
           pSizes[i][j] = cellSize;
         }
       }
-      //Boulders.clear();  
-      //Bars.clear();   
-      speedX = 10.0*w/ow;
-      speedY = 0.1*h/oh;
-      gravity = 0.1*h/oh;
+      manager.setupEnvironment();
+      manager.setupBoulders();
       /*
+      state = 0;
+      speedX = speedXdelta = 4*rw;
+      speedY = 1*rh;
+      gravity = 0.4*rh;
+      ascentSpeed = 0;
       heightCount = 1;
       lastHeight = h-h/6;
       heightSum = 1;

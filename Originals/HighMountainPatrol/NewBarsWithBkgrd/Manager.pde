@@ -13,6 +13,7 @@ class Manager
     interval = int(random(w/speedX, 4*w/speedX));
     intervalCounter = 0;
     collisionCounterOn = false;
+    state = 0;
   }
   
   void setupBars()
