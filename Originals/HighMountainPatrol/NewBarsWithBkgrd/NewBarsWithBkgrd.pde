@@ -54,6 +54,7 @@ void draw()
       manager.detectPickups();
     }
     player.explode();
+    println("player.ypos: " + player.ypos + " , h: " + h);
   }
 }
 
@@ -73,7 +74,7 @@ void detectCollisions()
 {
   for(int i=0; i<Boulders.length; i++)
   {
-    if((player.xpos>Boulders[i].xpos && player.xpos<Boulders[i].xend && player.ypos>Boulders[i].ypos && player.ypos-27<Boulders[i].yend) || player.ypos>h)
+    if((player.xpos>Boulders[i].xpos && player.xpos<Boulders[i].xend && player.ypos>Boulders[i].ypos && player.ypos<Boulders[i].yend) || player.ypos>h)
     {
       collisionCounterOn = true;
       //speedX = 0;

@@ -99,7 +99,6 @@ abstract class Pickup
       counter++;
       cyellow++;
       cblue += 8;
-      println("cyellow: " + cyellow);
     }    
     else  
     {

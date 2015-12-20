@@ -15,8 +15,8 @@ class Boulder
     tr = _tr;
     bl = _bl;
     br = _br;
-    xend = xpos + w;
-    yend = ypos + h;
+    xend = xpos + boulderw;
+    yend = ypos + boulderh;
     sliceSize = w/20;
     slices = int(w/sliceSize);
     c1 = color(int(random(0, 100)));
