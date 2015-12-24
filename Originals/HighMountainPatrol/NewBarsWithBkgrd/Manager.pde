@@ -14,6 +14,7 @@ class Manager
     intervalCounter = 0;
     collisionCounterOn = false;
     state = 0;
+    titleText = loadImage("TitleText.png");
   }
   
   void setupBars()
@@ -49,7 +50,7 @@ class Manager
   {
     Boulders = new Boulder[2];
     for(int i=0; i<Boulders.length; i++)    
-      Boulders[i] = new Boulder(w, random(-10, 3*h/4), random(width/20, 12*width/20), random(width/20, 12*width/20), random(50), random(50), random(50), random(50));
+      Boulders[i] = new Boulder(w, random(-10, 3*h/4), random(width/20, 6*width/20), random(width/20, 6*width/20), random(50), random(50), random(50), random(50));
   }
   
   void setupPickups()
@@ -130,6 +131,15 @@ class Manager
       Bars[i].update(mouseX, mouseY, speedX, ascentSpeed);
       Bars[i].display(); 
     }     
+  }
+  
+  void manageFonts()
+  {
+    if(state == 0)
+    {
+      rectMode(CENTER);
+      image(titleText,0,h/4,w,titleText.height*rh);
+    }
   }
   
   void manageBoulders()

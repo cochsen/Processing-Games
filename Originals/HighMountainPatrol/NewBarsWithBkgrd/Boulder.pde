@@ -21,7 +21,7 @@ class Boulder
     slices = int(w/sliceSize);
     c1 = color(int(random(0, 100)));
     c2 = color(int(random(100, 200)));
-    img = loadImage("rock.png");
+    img = loadImage("rock5.png");
   }
   
   void update(float _asc)
@@ -36,14 +36,15 @@ class Boulder
   {
     imageMode(CORNER);
     image(img, xpos, ypos, boulderw, boulderh);
+    noTint();
   }
   
   void reposition()
   {
     xpos = w;
     ypos = random(-10, 3*h/4);
-    boulderw = random(width/20, 12*width/20);
-    boulderh = random(width/20, 12*width/20);
+    boulderw = random(width/20, 6*width/20);
+    boulderh = random(width/20, 6*width/20);
     xend = xpos + boulderw;
     yend = ypos + boulderh;
     tl = random(50);

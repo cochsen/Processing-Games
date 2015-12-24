@@ -9,6 +9,7 @@ Coin[] Coins;
 Gem[] Gems;
 Manager manager;
 Boulder[] Boulders;
+PImage titleText;
 
 void settings()
 {
@@ -56,6 +57,7 @@ void draw()
     player.explode();
     println("player.ypos: " + player.ypos + " , h: " + h);
   }
+  manager.manageFonts();
 }
 
 void realign()
@@ -81,6 +83,12 @@ void detectCollisions()
       break;
     }
   }
+}
+
+void mousePressed()
+{
+  if(state == 0)
+    state = 1;
 }
 
 // test
