@@ -7,9 +7,9 @@ class Bar
     xpos = _x;
     ypos = _y;
     speed = _s;
-    barWidth = w/16;
+    barWidth = w/20;
     barHalfWidth = barWidth/2;
-    barHeight = 0;
+    barHeight = 0;  // not used?
     mousePosX = 0;
     mousePosY = w/6;
   }
@@ -18,25 +18,29 @@ class Bar
   {
     speed = _sX;
     ascent = _asc;
-    xpos = xpos -= speed;
-    ypos = ypos += ascent;
+    xpos = xpos - speed;
+    ypos = ypos + ascent;
     mousePosX = _x;
     if(xpos>mousePosX-barHalfWidth && xpos<mousePosX+barHalfWidth)
     {
       ypos = _y;
-    }
-    if(xpos>w/6-20 && xpos<w/6+20)
+    }   
+    if(xpos<w/6 && xpos>w/6-w/20)
     {
+      player.setPrevBarHeight(ypos);  
+    }
+    if(xpos>w/6 && xpos<w/6+w/20)
+    {
+      player.setBarHeight(ypos);
+      player.lastypos = player.ypos;
       if(player.ypos<ypos)
       {
-        player.ypos += speedY - 0.3*momentum;
+        player.ypos += speedY;  
         speedY += gravity;
-        if(state == 1 && ypos-player.ypos>100)
-          score+=int(0.1*(ypos-player.ypos));
       }
       else
       {
-        player.ypos = ypos;         
+        player.ypos = ypos;
         speedY = 1;
       }
     }
@@ -45,6 +49,8 @@ class Bar
   void display()
   {
     rectMode(CORNER);
+    stroke(0);
+    strokeWeight(1);
     fill(#5CE200);   
     rect(xpos-barHalfWidth, ypos, barWidth, h-ypos);
   }

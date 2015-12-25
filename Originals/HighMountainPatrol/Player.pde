@@ -1,21 +1,26 @@
 class Player
 {
   boolean snapshot, exploding;
-  int cellSize;
-  int columns, rows;
-  float xpos, ypos, xoffset, yoffset;
+  int cellSize, columns, rows, counter;
+  float xpos, ypos, lastypos, xoffset, yoffset;
+  float avg0, avg1;
+  float barHeight, prevBarHeight;
+  float[] trpos;
   float[][] pxdir, pydir, pSizes, pScaling;
-  color c1, c2, window;
+  color c1, c2, c3;
   PImage img;
   
-  Player(float _x, float _y)
+  Player(float x, float y)
   {
-    xpos = _x;
-    ypos = _y;
-    xoffset = 24 * w/ow;
-    yoffset = 15 * h/oh;  
+    xpos = x;
+    ypos = lastypos = y;
+    xoffset = 48*rw;
+    yoffset = 30*rh;
+    trpos = new float[4];
+    for(int i=0; i<4; i++)
+      trpos[i] = y;
     
-    // attributes associated with explosion method
+    // explosion method attributes
     snapshot = false;
     exploding = false;
     counter = 0;
@@ -25,7 +30,7 @@ class Player
     pxdir = new float[columns][rows];
     pydir = new float[columns][rows];
     pSizes = new float[columns][rows];
-    pScaling = new float[columns][rows];      
+    pScaling = new float[columns][rows];  
     
     // initialization of arrays for explosion
     for(int i=0; i<columns; i++)
@@ -40,91 +45,91 @@ class Player
     }       
   }
   
-  void update() 
+  void update()
   {
-    if(exploding == false) // && frameCount%5 == 0
-    {
-      if(ypos<lastHeight && momentum>=20)
-      {
-        heightSum += lastHeight-ypos;
-        momentum = 20;  
-        heightCount++;
-        lastHeight = ypos;
-        speedX -= 0.01*(w/ow); // *(lastHeight-ypos);
-      }
-      else if(ypos<lastHeight)
-      {
-        heightSum += lastHeight-ypos;
-        // calculate momentum
-        momentum += 0.5; // 0.5*heightSum/heightCount;  
-        heightCount++;
-        lastHeight = ypos;          
-        speedX -= 0.01*(w/ow); // *(lastHeight-ypos);
-      }
-      else if((ypos == lastHeight) || (ypos>lastHeight))
-      {
-        heightSum = 1;
-        heightCount = 1;
-        lastHeight = ypos;
-        momentum = 1;
-        speedX += 0.01*w/ow;
-      }
+    if(exploding == false)
+    { 
+      trpos[3] = trpos[2];
+      trpos[2] = trpos[1];      
+      trpos[1] = trpos[0]; 
+      trpos[0] = ypos;           
     }
+    avg0 = (trpos[0] + trpos[1] + trpos[2])/3;
+    avg1 = (trpos[1] + trpos[2] + trpos[3])/3;
+    // speed conditions
+    // 1. cap speed at 30
+    // 2. speed cannot be negative (speedX >0)
+    // 3. going uphill slows you down
+    // 4. going downhill or straight speeds you up
+    if(prevBarHeight - barHeight > yoffset)
+      speedX -= 0.01*(prevBarHeight-barHeight);
+    else if(prevBarHeight <= barHeight)
+      speedX += 0.03 + 0.01*(barHeight-prevBarHeight);
+    if(speedX < 0)
+      speedX = 0;
+    if(speedX > 20*rw)
+      speedX = 20*rw;
+    rectMode(CORNER);
+    stroke(200);
+    noFill();
+    rect(xpos, ypos-yoffset, xoffset, yoffset);
   }
   
   void display()
   {
-    if(state == 1 && counterOn == false)
+    pushMatrix();
+    translate(xpos, ypos);
+    if(ypos > lastypos)
+      rotate(-2*PI/(ypos/lastypos));
+    else
+      rotate(-2*PI/(avg0/avg1));
+    drawRover();
+    popMatrix();
+    if(snapshot == false)
+      getImage();
+  }
+    
+    void drawRover()
     {
+      c1 = color(#7FB7BE);
+      c2 = color(#DACC3E);
+      c3 = color(#D3F3EE);
+      stroke(c1);
+      fill(c1);
       rectMode(CORNER);
-      if(lastHeight-ypos>h/20) // momentum>5
-      {
-        pushMatrix();
-        translate(xpos, ypos);
-        rotate(-PI/3.0);
-        drawRover();
-        //image(img, 0, 0, imagew, imageh);
-        popMatrix();
-      }
-      else
-        drawRover();
-        if(snapshot == false)
-          getImage();
-        //image(img, xpos-w/ow*24, ypos-h/oh*15, 40, 27);
+      rect(rw*10, -yoffset+rw*6, rw*32, rw*14);
+      rect(rw*0, -yoffset+rw*6, rw*10, rw*10);
+      rect(rw*10, -yoffset+rw*0, rw*20, rw*6);
+      rect(rw*10, -yoffset+rw*2, rw*22, rw*4);
+      stroke(c3);
+      fill(c3);
+      rect(rw*18, -yoffset+rw*2, rw*10, rw*4);
+      stroke(c2);
+      fill(c2);
+      ellipseMode(CORNER);
+      ellipse(rw*4, -yoffset+rw*10, rw*20, rw*20);
+      ellipse(rw*28, -yoffset+rw*10, rw*20, rw*20);    
+    }    
+    
+    void getImage()
+    {
+      img = get(int(xpos), int(ypos-yoffset), int(xoffset), int(yoffset));  
+      snapshot = true;
+    }    
+    
+    void setBarHeight(float y)
+    {
+      barHeight = y;  
+    }    
+    
+    void setPrevBarHeight(float y)
+    {
+      prevBarHeight = y;  
     }
-  }
-
-  void drawRover()
-  {
-    c1 = color(#7FB7BE);
-    c2 = color(#DACC3E);
-    window = color(#D3F3EE);
-    stroke(c1);
-    fill(c1);
-    rectMode(CORNER);
-    rect(xpos+rw*5, ypos-yoffset+rw*3, rw*16, rw*7);
-    rect(xpos+rw*0, ypos-yoffset+rw*3, rw*5, rw*5);
-    rect(xpos+rw*5, ypos-yoffset+rw*0, rw*10, rw*3);
-    rect(xpos+rw*4, ypos-yoffset+rw*1, rw*11, rw*2);
-    stroke(window);
-    fill(window);
-    rect(xpos+rw*9, ypos-yoffset+rw*1, rw*5, rw*2);
-    stroke(c2);
-    fill(c2);
-    ellipseMode(CORNER);
-    ellipse(xpos+rw*2, ypos-yoffset+rw*5, rw*10, rw*10);
-    ellipse(xpos+rw*14, ypos-yoffset+rw*5, rw*10, rw*10);    
-  }
-
-  void getImage()
-  {
-    img = get(int(xpos), int(ypos-yoffset), int(xoffset), int(yoffset));  
-    snapshot = true;
-  }
-
+    
   void explode()
   {
-    if(counterOn && counter<frameRate/2)
+    if(collisionCounterOn && counter<frameRate/2)
     {
       for(int i=0; i<columns; i++)
       {
@@ -151,11 +156,10 @@ class Player
       }
       counter++;
     }
-    else if(counterOn)
+    else if(collisionCounterOn)
     {
-      counterOn = false;
+      collisionCounterOn = false;
       exploding = false;
-      state = 0;
       counter = 0;
       cellSize = 4;
       for(int i=0; i<columns; i++)
@@ -168,21 +172,20 @@ class Player
           pSizes[i][j] = cellSize;
         }
       }
-      Boulders.clear();  
-      Bars.clear();
-      for(int i=0; i<22; i++) 
-      {
-        Bars.add(new Bar(i*w/20, barHeight, speedX));  
-        barHeight = h-h/6;
-      }      
-      speedX = 10.0*w/ow;
-      speedY = 0.1*h/oh;
-      gravity = 0.1*h/oh;
+      manager.setupEnvironment();
+      manager.setupBoulders();
+      /*
+      state = 0;
+      speedX = speedXdelta = 4*rw;
+      speedY = 1*rh;
+      gravity = 0.4*rh;
+      ascentSpeed = 0;
       heightCount = 1;
       lastHeight = h-h/6;
       heightSum = 1;
       momentum = 1;
       score = 0;
+      */
     }  
-  }
+  }       
 }
