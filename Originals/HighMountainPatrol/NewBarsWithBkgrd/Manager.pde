@@ -14,7 +14,9 @@ class Manager
     intervalCounter = 0;
     collisionCounterOn = false;
     state = 0;
+    score = 0;
     titleText = loadImage("TitleText.png");
+    zerovelo = createFont("zerovelo.ttf", h/24);
   }
   
   void setupBars()
@@ -85,6 +87,7 @@ class Manager
       {
         speedX += 5*rw;  
         pickupcounter += 1;
+        score += 25;
         Coins[i].effectxpos = Coins[i].xpos;
         Coins[i].effectypos = Coins[i].ypos;        
         Coins[i].xpos = w + random(200);   
@@ -97,6 +100,7 @@ class Manager
       {
         speedX += 5*rw;  
         pickupcounter += 1;
+        score += 50;
         Gems[i].xpos = w + random(200);   
         Gems[i].ypos = random(h);
         Gems[i].counterOn = true;
@@ -140,6 +144,12 @@ class Manager
       rectMode(CENTER);
       image(titleText,0,h/4,w,titleText.height*rh);
     }
+    if(state == 1)
+    {
+      fill(255,0,0);
+      textFont(zerovelo);
+      text("Score: " + score, w/30, h/20);  
+    }
   }
   
   void manageBoulders()
@@ -173,32 +183,5 @@ class Manager
     color[] set1 = {};
     color[] set2 = {color(#7fb7be), color(#dacc3e), color(#5CE200),  color(#bc2c1a), color(#7d1538), color(#000028)};
     color[] set3 = {};
-  }
-  
-   /*
-  void detectCollisions()
-  {
-    for(int i=0; i<Boulders.size(); i++)
-    {
-      if((player.xpos>Boulders.get(i).xpos && player.xpos<Boulders.get(i).xend && player.ypos>Boulders.get(i).ypos && player.ypos-27<Boulders.get(i).yend) || player.ypos>h)
-      {
-        counterOn = true;
-        //speedX = 0;
-        break;
-      }
-    }
-  }
-  
-  void detectPickup()
-  {
-    for(int i=0; i<Pickups.size(); i++)
-    {
-      if((player.xpos>Pickups.get(i).xpos && player.xpos<Pickups.get(i).xend && player.ypos>Pickups.get(i).ypos && player.ypos-27<Pickups.get(i).yend) || player.ypos>h)
-      {
-          
-      }
-    }
-  }   
-  */
-  
+  }  
 }

@@ -1,5 +1,5 @@
 boolean collisionCounterOn;
-int state, interval, intervalCounter;
+int state, score, interval, intervalCounter;
 float w, h, ow, oh, rw, rh;
 float barWidth, barHeight, speedX, speedXdelta, speedY, gravity, ascentSpeed;
 Player player;
@@ -10,6 +10,7 @@ Gem[] Gems;
 Manager manager;
 Boulder[] Boulders;
 PImage titleText;
+PFont zerovelo;
 
 void settings()
 {
