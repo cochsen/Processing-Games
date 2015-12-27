@@ -6,9 +6,11 @@ Original and Rewritten games in Processing
 
 Works in Progress
 
-High Mountain Ranger Truck: a game that expands on Kenta Cho's Prominent Mountain. Dodge boulders and trees while picking up gold and shooting poachers before they shoot you!
+High Mountain Patrol: a game that expands on Kenta Cho's Prominent Mountain. Dodge boulders and trees while picking up gold and gems by altering the landscape.
 
 McBoo: You're a cranky ghost who must sneak up on your enemies to attack. Your enemies are generation Y hipsters.
+
+Super Vertex: Updated version of Tempest for touchscreen.
 
 ## Remakes 
 
