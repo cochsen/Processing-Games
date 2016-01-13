@@ -7,6 +7,7 @@ int[] dartRowSize = new int[8];
 int[] startPos = new int[8];
 PImage PlayerImg, dartImgUp, dartImgDown, dartImgLeft, dartImgRight, 
   tmpImage;
+Manager manager;
 Player player;
 /*
  * ArrayList todos:
@@ -19,64 +20,11 @@ void setup()
 {
   size(480, 480);
   frameRate(60);
-  w=width; h=height;
-  background(0);
-  state = 0;
-  collision=false;
-  keys = new boolean[4];  // mapping: [d,a,s,w]
-  for(int i=0; i<keys.length; i++) keys[i] = false;  
-  // orientation initial values (determines starting side and direction of movement)
-  for(int i=0; i<orientations.length; i++) 
-  {
-    orientations[i] = int(random(1,5));  
-  }
-  // initial number of darts for first 8 rows/cols
-  for(int i=0; i<dartRowSize.length; i++) 
-  {
-    dartRowSize[i] = 24*int(random(1, 17));
-  }
-  // some index to start the row/col that will fit all the darts on the screen
-  for(int i=0; i<startPos.length; i++) 
-  {
-    int diff = int(random(480-dartRowSize[i]));
-    startPos[i] = diff-(diff%24);  
-  }
-  // load .png images
-  PlayerImg = loadImage("actor.png");
-  dartImgUp = loadImage("DartPointUp.png");
-  dartImgLeft = loadImage("DartPointLeft.png");
-  dartImgDown = loadImage("DartPointDown.png");
-  dartImgRight = loadImage("DartPointRight.png");
-  // initialize player in the middle of the board
-  player = new Player(PlayerImg, w/2, h/2);
-  // add 8 ArrayLists of darts to ArrayList rows
-  // select image based on orientation
-  for(int i=0; i<orientations.length; i++) 
-  {
-    // create dart with image and positions based on orientation
-    if(orientations[i] == 1)
-    {
-      tmpImage = dartImgDown;
-      Darts.add(new Dart(tmpImage, orientations[i], startPos[i], 0.0, dartRowSize[i], 24));
-    }
-    else if(orientations[i] == 2)
-    {
-      tmpImage = dartImgLeft;
-      Darts.add(new Dart(tmpImage, orientations[i], w, startPos[i], 24, dartRowSize[i]));
-    }
-    else if(orientations[i] == 3)
-    {
-      tmpImage = dartImgUp;
-      Darts.add(new Dart(tmpImage, orientations[i], startPos[i], h, dartRowSize[i], 24));
-    }
-    else
-    {
-      tmpImage = dartImgRight;
-      Darts.add(new Dart(tmpImage, orientations[i], 0.0, startPos[i], 24, dartRowSize[i])); 
-    }
-  }
-  // pick first dart to appear at random
-  nextDart = int(random(Darts.size()));
+  Manager manager = new Manager();
+  manager.setupEnv();
+  manager.setupControls();
+  manager.setupDarts();
+  manager.setupPlayer();
 }
 
 void draw() 
@@ -91,12 +39,10 @@ void draw()
     collision = detectCollision(currentDart);
     if(collision == true)
     {
-      state=1;
+      state=1;     
       Darts.remove(currentDart);
       createNewDarts();
-      nextDart = int(random(Darts.size()));      
-      player.xpos=w/2;
-      player.ypos=h/2;
+      nextDart = int(random(Darts.size()));  
     }
     currentDart.out = outOfBounds(currentDart);
     if(currentDart.out == true) 
@@ -112,9 +58,17 @@ void draw()
   }   
   else
   {
+    
+    if(player.exploding == true)
+    {
+      player.update();
+      player.display();
+    }
+    
     text("From Four Sides", w/2, h/2);   
     if(keyPressed) state=0;
   }
+  println("state: " + state);
 }
 
 void drawGrid() 
@@ -187,6 +141,10 @@ void createNewDarts()
 
 boolean detectCollision(Dart currentDart) 
 {
-  if(player.xpos>currentDart.xpos && player.xpos<currentDart.xpos+currentDart.w && player.ypos>currentDart.ypos && player.ypos<currentDart.ypos+currentDart.h) return true;
+  if(player.xpos>currentDart.xpos && player.xpos<currentDart.xpos+currentDart.w && player.ypos>currentDart.ypos && player.ypos<currentDart.ypos+currentDart.h)
+  {
+    player.exploding(true);
+    return true;
+  }
   else return false;
 }
