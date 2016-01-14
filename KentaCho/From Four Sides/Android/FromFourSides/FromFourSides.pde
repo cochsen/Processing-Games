@@ -1,6 +1,7 @@
 boolean collision;
 int state, tmpOrientation, nextDart;
-float w, h;
+int dartWidth, dartHeight, playerWidth, playerHeight, dartSpeed;
+float w, h, rw, rh;
 boolean[] keys;
 int[] orientations = new int[8];
 int[] dartRowSize = new int[8];
@@ -13,7 +14,7 @@ ArrayList<Dart> Darts = new ArrayList<Dart>();
   
 void setup() 
 {
-  size(480, 480);
+  size(displayWidth, displayWidth, P2D);
   frameRate(60);
   Manager manager = new Manager();
   manager.setupEnv();
@@ -29,7 +30,7 @@ void draw()
   if(state == 0)
   {
     player.update();
-    player.display(); 
+    player.display();
     Dart currentDart = Darts.get(nextDart);
     collision = detectCollision(currentDart);
     if(collision == true)
@@ -49,7 +50,7 @@ void draw()
     else {
       currentDart.move();
       currentDart.display();
-    }       
+    } 
   }   
   else
   {
@@ -120,22 +121,22 @@ void createNewDarts()
   if(newOrientation == 1)
   {
     tmpImage = dartImgDown;
-    Darts.add(new Dart(tmpImage, newOrientation, newStartPos, 0.0, newDartRowSize, 24));
+    Darts.add(new Dart(tmpImage, newOrientation, newStartPos, 0.0, newDartRowSize, dartWidth));
   }
   else if(newOrientation == 2)
   {
     tmpImage = dartImgLeft;
-    Darts.add(new Dart(tmpImage, newOrientation, w, newStartPos, 24, newDartRowSize));
+    Darts.add(new Dart(tmpImage, newOrientation, w, newStartPos, dartWidth, newDartRowSize));
   }
   else if(newOrientation == 3)
   {
     tmpImage = dartImgUp;
-    Darts.add(new Dart(tmpImage, newOrientation, newStartPos, h, newDartRowSize, 24));
+    Darts.add(new Dart(tmpImage, newOrientation, newStartPos, h, newDartRowSize, dartWidth));
   }
   else
   {
     tmpImage = dartImgRight;
-    Darts.add(new Dart(tmpImage, newOrientation, 0.0, newStartPos, 24, newDartRowSize)); 
+    Darts.add(new Dart(tmpImage, newOrientation, 0.0, newStartPos, dartWidth, newDartRowSize)); 
   }  
 }
 

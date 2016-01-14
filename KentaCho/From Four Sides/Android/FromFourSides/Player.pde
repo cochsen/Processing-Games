@@ -11,7 +11,7 @@ class Player
     img = _img;
     xpos = _x;
     ypos = _y;
-    speed = 8;
+    speed = 8*rw;
     diagSpeed = sqrt(speed/2); 
     exploding = false;
     counter = 0;
@@ -39,7 +39,7 @@ class Player
     if(exploding == false)
     {
       imageMode(CORNER);
-      image(img, xpos, ypos);      
+      image(img, xpos, ypos, img.width*rw, img.height*rh);      
     }
     else
       explode(xpos, ypos);

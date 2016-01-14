@@ -17,11 +17,11 @@ class Dart
     out = false;
     if(orientation == 1 || orientation == 3)
     {
-      nImg = int(w/img.width);
+      nImg = round(w/dartWidth);
     }
     else 
     {
-      nImg = int(h/img.height);
+      nImg = round(h/dartWidth);
     }
   }
   
@@ -32,15 +32,24 @@ class Dart
     {
       for(int i=0; i<nImg; i++) 
       {
-        image(img, xpos+i*24, ypos);  
+        image(img, xpos+i*dartWidth, ypos, dartWidth, dartWidth);         
       }  
+      stroke(225);
+      noFill();
+      rectMode(CORNER);
+      rect(xpos, ypos, w, h); 
+
     }
     else 
     {
       for(int i=0; i<nImg; i++)
       {
-        image(img, xpos, ypos+i*24);  
+        image(img, xpos, ypos+i*dartWidth, dartWidth, dartWidth);  
       }
+      stroke(225);
+      noFill();      
+      rectMode(CORNER);
+      rect(xpos, ypos, w, h); 
     }
     
   }
@@ -49,16 +58,16 @@ class Dart
   {
     switch(orientation) {
       case 1:
-        ypos += 5;
+        ypos += dartSpeed;
         break;
       case 2: 
-        xpos -= 5;
+        xpos -= dartSpeed;
         break;
       case 3: 
-        ypos -= 5;
+        ypos -= dartSpeed;
         break;
       case 4:
-        xpos += 5;
+        xpos += dartSpeed;
         break;
       default:
         break;
