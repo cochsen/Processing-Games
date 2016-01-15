@@ -2,7 +2,6 @@ boolean collision;
 int state, tmpOrientation, nextDart;
 int dartWidth, dartHeight, playerWidth, playerHeight, dartSpeed;
 float w, h, rw, rh;
-boolean[] keys;
 int[] orientations = new int[8];
 int[] dartRowSize = new int[8];
 int[] startPos = new int[8];
@@ -18,7 +17,6 @@ void setup()
   frameRate(60);
   Manager manager = new Manager();
   manager.setupEnv();
-  manager.setupControls();
   manager.setupDarts();
   manager.setupPlayer();
 }
@@ -78,22 +76,6 @@ void drawGrid()
   strokeWeight(5);  
   for(int i=0; i<10; i++) line(0, h/10+i*h/10, w, h/10+i*h/10);
   for(int j=0; j<10; j++) line(w/10+j*w/10, h, w/10+j*w/10, 0);    
-}
-
-void keyPressed() 
-{
-    if(key == 'a' || key == 'A') keys[1] = true;
-    if(key == 'd' || key == 'D') keys[0] = true;
-    if(key == 'w' || key == 'W') keys[2] = true;
-    if(key == 's' || key == 'S') keys[3] = true;      
-}
-
-void keyReleased()
-{
-  if(key == 'a' || key == 'A') keys[1] = false;
-  if(key == 'd' || key == 'D') keys[0] = false;
-  if(key == 'w' || key == 'W') keys[2] = false;
-  if(key == 's' || key == 'S') keys[3] = false;
 }
 
 // generate random integers for orientations of n rows of darts

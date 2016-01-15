@@ -14,12 +14,6 @@ class Manager
     collision=false;
   }
   
-  void setupControls()
-  {
-    keys = new boolean[4];  // mapping: [d,a,s,w]
-    for(int i=0; i<keys.length; i++) keys[i] = false;  
-  }
-  
   void setupDarts()
   {
     // orientation initial values (determines starting side and direction of movement)

@@ -34,10 +34,12 @@ class Dart
       {
         image(img, xpos+i*dartWidth, ypos, dartWidth, dartWidth);         
       }  
+      /* uncomment to display collision boundary
       stroke(225);
       noFill();
       rectMode(CORNER);
       rect(xpos, ypos, w, h); 
+      */
 
     }
     else 
@@ -46,10 +48,12 @@ class Dart
       {
         image(img, xpos, ypos+i*dartWidth, dartWidth, dartWidth);  
       }
+      /* uncomment to display collision boundary
       stroke(225);
       noFill();      
       rectMode(CORNER);
       rect(xpos, ypos, w, h); 
+      */
     }
     
   }
