@@ -6,7 +6,7 @@ int[] orientations = new int[8];
 int[] dartRowSize = new int[8];
 int[] startPos = new int[8];
 PImage PlayerImg, dartImgUp, dartImgDown, dartImgLeft, dartImgRight, 
-  tmpImage;
+  tmpImage, title;
 Manager manager;
 Player player;
 ArrayList<Dart> Darts = new ArrayList<Dart>();
@@ -59,13 +59,8 @@ void draw()
       player.display();
     }
     else {
-      fill(225);
-      textSize(h/8);
-      textAlign(CENTER);
-      text("From Four Sides", w/2, h/2);   
-      textSize(h/16);
-      text("Touch to Start", w/2, h/2 + h/8);
-      if(keyPressed) state=0;
+      image(title,0, h/4, title.width*rw, title.height*rh);
+      if(mousePressed) state=0;
     }
   }
 }

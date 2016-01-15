@@ -10,8 +10,9 @@ class Manager
     playerHeight = int(28*rh);
     dartSpeed = int(5*rw);
     background(0);
-    state = 0;
+    state = 1;
     collision=false;
+    title = loadImage("title.png");
   }
   
   void setupDarts()
