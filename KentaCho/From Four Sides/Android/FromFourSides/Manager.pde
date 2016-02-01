@@ -8,9 +8,11 @@ class Manager
     dartHeight = int(24*rh);
     playerWidth = int(20*rw);
     playerHeight = int(28*rh);
-    dartSpeed = int(15*rw);
+    dartSpeed = 5;
+    dartSpeedScaled = int(dartSpeed*rw);
     background(0);
     state = 1;
+    counter = 0;
     collision=false;
     title = loadImage("title.png");
   }

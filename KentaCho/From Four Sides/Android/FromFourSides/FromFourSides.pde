@@ -1,6 +1,6 @@
 boolean collision;
-int state, tmpOrientation, nextDart;
-int dartWidth, dartHeight, playerWidth, playerHeight, dartSpeed;
+int state, tmpOrientation, nextDart, counter;
+int dartWidth, dartHeight, playerWidth, playerHeight, dartSpeed, dartSpeedScaled;
 float w, h, rw, rh;
 int[] orientations = new int[8];
 int[] dartRowSize = new int[8];
@@ -33,7 +33,17 @@ void draw()
     else
       nextDart = 0;    
     ActiveDarts.add(Darts.get(nextDart));
+    
   }  
+  if (frameCount % 120 == 0) {
+    counter++;  
+  }
+  if((counter > dartSpeed) && (dartSpeed < 16))
+  {
+    dartSpeed++;  
+    dartSpeedScaled = int(dartSpeed*rw);
+    println("dartSpeedScaled = " + dartSpeedScaled);
+  }
   if(state == 0)
   {
     player.update();
@@ -43,18 +53,18 @@ void draw()
       collision = detectCollision(currentDart);
       if(collision == true)
       {
-        state=1;     
+        state=1;    
         Darts.remove(nextDart);
         createNewDarts();
         ActiveDarts.clear();
-        ActiveDarts.add(Darts.get(0));
-        nextDart = 0;
-        /*
-        if (nextDart < 7)
-          nextDart++; 
+        if (nextDart > 0)
+          ActiveDarts.add(Darts.get(nextDart-1));
         else
-          nextDart = 0;
-        */
+          ActiveDarts.add(Darts.get(7));
+        nextDart = 0;
+        counter = 0;
+        dartSpeed = 5;
+        dartSpeedScaled = int(dartSpeed*rw);
       }
       currentDart.out = outOfBounds(currentDart);
       if(currentDart.out == true) 
@@ -62,12 +72,6 @@ void draw()
         ActiveDarts.remove(currentDart);
         Darts.remove(nextDart);
         createNewDarts();
-        /*
-        if (nextDart < 7)
-          nextDart++; 
-        else
-          nextDart = 0;
-        */
       }
       else {
         currentDart.move();

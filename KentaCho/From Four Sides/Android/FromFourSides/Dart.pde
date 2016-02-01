@@ -62,16 +62,16 @@ class Dart
   {
     switch(orientation) {
       case 1:
-        ypos += dartSpeed;
+        ypos += dartSpeedScaled;
         break;
       case 2: 
-        xpos -= dartSpeed;
+        xpos -= dartSpeedScaled;
         break;
       case 3: 
-        ypos -= dartSpeed;
+        ypos -= dartSpeedScaled;
         break;
       case 4:
-        xpos += dartSpeed;
+        xpos += dartSpeedScaled;
         break;
       default:
         break;

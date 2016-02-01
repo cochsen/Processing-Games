@@ -115,7 +115,7 @@ class Player
           pydir[i][j] = random(-10,10);
           pSizes[i][j] = cellSize;
         }
-      }    
+      } 
     }
   }    
 }
