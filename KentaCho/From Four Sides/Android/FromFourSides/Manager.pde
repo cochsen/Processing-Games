@@ -65,6 +65,7 @@ class Manager
     }
     // pick first dart to appear at random
     nextDart = 0;
+    ActiveDarts.add(Darts.get(nextDart));
   }
   
   void setupPlayer()

@@ -10,6 +10,7 @@ PImage PlayerImg, dartImgUp, dartImgDown, dartImgLeft, dartImgRight,
 Manager manager;
 Player player;
 ArrayList<Dart> Darts = new ArrayList<Dart>();
+ArrayList<Dart> ActiveDarts = new ArrayList<Dart>();
   
 void setup() 
 {
@@ -25,35 +26,53 @@ void draw()
 {
   background(0);
   drawGrid(); 
+  if (frameCount % 15 == 0) 
+  {
+    if (nextDart < 7)
+      nextDart++; 
+    else
+      nextDart = 0;    
+    ActiveDarts.add(Darts.get(nextDart));
+  }  
   if(state == 0)
   {
     player.update();
     player.display();
-    Dart currentDart = Darts.get(nextDart);
-    collision = detectCollision(currentDart);
-    if(collision == true)
-    {
-      state=1;     
-      Darts.remove(currentDart);
-      createNewDarts();
-      if (nextDart < 7)
-        nextDart++; 
-      else
+    for (int i=0; i<ActiveDarts.size(); i++) {
+      Dart currentDart = ActiveDarts.get(i);
+      collision = detectCollision(currentDart);
+      if(collision == true)
+      {
+        state=1;     
+        Darts.remove(nextDart);
+        createNewDarts();
+        ActiveDarts.clear();
+        ActiveDarts.add(Darts.get(0));
         nextDart = 0;
-    }
-    currentDart.out = outOfBounds(currentDart);
-    if(currentDart.out == true) 
-    {
-      Darts.remove(currentDart);
-      createNewDarts();
-      if (nextDart < 7)
-        nextDart++; 
-      else
-        nextDart = 0;
-    }
-    else {
-      currentDart.move();
-      currentDart.display();
+        /*
+        if (nextDart < 7)
+          nextDart++; 
+        else
+          nextDart = 0;
+        */
+      }
+      currentDart.out = outOfBounds(currentDart);
+      if(currentDart.out == true) 
+      {
+        ActiveDarts.remove(currentDart);
+        Darts.remove(nextDart);
+        createNewDarts();
+        /*
+        if (nextDart < 7)
+          nextDart++; 
+        else
+          nextDart = 0;
+        */
+      }
+      else {
+        currentDart.move();
+        currentDart.display();
+      }      
     } 
   }   
   else
@@ -65,7 +84,11 @@ void draw()
     }
     else {
       image(title,0, h/4, title.width*rw, title.height*rh);
-      if(mousePressed) state=0;
+      if(mousePressed) 
+      {
+        state=0;
+        println("Darts size: " + Darts.size());
+      }
     }
   }
 }
