@@ -8,7 +8,7 @@ class Manager
     dartHeight = int(24*rh);
     playerWidth = int(20*rw);
     playerHeight = int(28*rh);
-    dartSpeed = int(5*rw);
+    dartSpeed = int(15*rw);
     background(0);
     state = 1;
     collision=false;
@@ -64,7 +64,7 @@ class Manager
       }
     }
     // pick first dart to appear at random
-    nextDart = int(random(Darts.size()));
+    nextDart = 0;
   }
   
   void setupPlayer()

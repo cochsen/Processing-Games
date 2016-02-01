@@ -36,14 +36,20 @@ void draw()
       state=1;     
       Darts.remove(currentDart);
       createNewDarts();
-      nextDart = int(random(Darts.size()));  
+      if (nextDart < 7)
+        nextDart++; 
+      else
+        nextDart = 0;
     }
     currentDart.out = outOfBounds(currentDart);
     if(currentDart.out == true) 
     {
       Darts.remove(currentDart);
       createNewDarts();
-      nextDart = int(random(Darts.size()));
+      if (nextDart < 7)
+        nextDart++; 
+      else
+        nextDart = 0;
     }
     else {
       currentDart.move();
@@ -55,7 +61,6 @@ void draw()
     
     if(player.exploding == true)
     {
-      player.update();
       player.display();
     }
     else {
