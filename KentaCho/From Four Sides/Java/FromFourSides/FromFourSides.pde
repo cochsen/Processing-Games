@@ -1,3 +1,8 @@
+/* 
+ * Javascript directives for preloading images
+ * @pjs preload="actor.png, DartPointUp.png, DartPointDown.png, DartPointLeft.png, DartPointRight.png";
+ */
+
 boolean collision;
 int state, tmpOrientation, nextDart;
 float w, h;
@@ -143,7 +148,7 @@ boolean detectCollision(Dart currentDart)
 {
   if(player.xpos>currentDart.xpos && player.xpos<currentDart.xpos+currentDart.w && player.ypos>currentDart.ypos && player.ypos<currentDart.ypos+currentDart.h)
   {
-    player.exploding(true);
+    player.isExploding(true);
     return true;
   }
   else return false;

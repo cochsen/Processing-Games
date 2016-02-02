@@ -73,7 +73,7 @@ class Player
     ypos = ypos+py;
   }
   
-  void exploding(boolean _exploding)
+  void isExploding(boolean _exploding)
   {
     exploding = _exploding;
   }
